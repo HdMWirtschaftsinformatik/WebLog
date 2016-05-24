@@ -15,8 +15,12 @@ public class Test {
 		BlogMapper bm = new BlogMapper();
 		
 		Vector<Blogeintrag> b = new Vector<Blogeintrag>();
+		
+		// Ruft die Methode findAll in der Klasse BlogMapper auf
 		b = bm.findAll();
 		
+		// findAll liefert einen Vector mit allen Blogeintrag-Objekten zurück
+		// Diese werden ausgegeben
 		for (int i = 0; i<b.size(); i++){
 		System.out.println(b.get(i).getTitel());
 		System.out.println(b.get(i).getUntertitel());
@@ -27,6 +31,8 @@ public class Test {
 		
 		//Blogeintrag anlegen
 		
+		//Ruft die Methode add in der Klasse BlogMapper auf.
+		//Dieser Methode wird ein Blogeintrag übergeben
 		bm.add(b.get(0));
 		
 		

@@ -54,6 +54,7 @@ public class BlogMapper {
 		            	Person person = new Person(name, vorname, email);
 		            	
 		            	//Blogeintrag erstellen
+		            	int id = rs.getInt("id");
 		            	String titel = rs.getString("titel");
 		            	String untertitel = rs.getString("untertitel");
 		            	Blogeintrag blogeintrag = new Blogeintrag(textbeitrag, person, titel, untertitel);
