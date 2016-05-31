@@ -3,9 +3,20 @@ package client;
 import java.sql.Date;
 
 public class Blogeintrag {
-	
+	public int id;
+	public int getId() {
+		return id;
+	}
+
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String titel;
 	public String untertitel;
+	
+	//Ein Blogeintrag besteht aus einem Textbeitrag und einer Person
 	public Textbeitrag textbeitrag;
 	public Person person;
 	

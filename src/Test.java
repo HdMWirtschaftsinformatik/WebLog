@@ -35,7 +35,10 @@ public class Test {
 		//Dieser Methode wird ein Blogeintrag übergeben
 		bm.add(b.get(0));
 		
+		BlogAdministration adm = new BlogAdministration();
 		
+		adm.createBlogeintrag();
+		adm.deleteBlogeintrag(3);
 		
 		
 

@@ -1,5 +1,6 @@
 package db;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.Vector;
 
 import client.Blogeintrag;
@@ -10,6 +11,7 @@ public class BlogMapper {
 	
 
 	private static BlogMapper blogMapper = null;
+	private Blogeintrag blogeintrag;
 	
 	 public BlogMapper() {
 	    }
@@ -44,7 +46,8 @@ public class BlogMapper {
 		            	Date datum = rs.getDate("datum");
 		            	String inhalt = rs.getString("inhalt");
 		            	
-		            	Textbeitrag textbeitrag = new Textbeitrag(datum, inhalt);
+		            	Textbeitrag textbeitrag = new Textbeitrag( inhalt);
+		            	textbeitrag.setDatum(datum);
 		            	
 		            	//Person erstellen
 		            	String name = rs.getString("name");
@@ -70,7 +73,9 @@ public class BlogMapper {
 		
 		 
 		 
-	public void add (Blogeintrag blogeintrag) throws SQLException{
+	public  void add (Blogeintrag blogeintrag) throws SQLException{
+		
+		this.blogeintrag = blogeintrag;
 		
 		Connection con = DBConnection.connection();
 		
@@ -129,12 +134,46 @@ public class BlogMapper {
 		
 		
 		
-		
-		
-		
-
+	
+	
 		 
-	}}
+	}
+	
+public void delete (int id) throws SQLException	{
+	
+	
+	Connection con = DBConnection.connection();
+		
+	Statement stmt = con.createStatement();
+	
+	
+     String sql = "DELETE FROM blogeintrag " +
+                  "WHERE id = "+id;
+     
+     stmt.executeUpdate(sql);
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+//public addKommentar (Kommentar kommentar){}
+
+
+
+
+
+
+
+
+
+}
+
+
 		 
 		 
 		 

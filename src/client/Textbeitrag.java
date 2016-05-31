@@ -1,6 +1,7 @@
 package client;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 public class Textbeitrag {
 	
@@ -8,9 +9,9 @@ public class Textbeitrag {
 	Date datum;
 	String inhalt;
 	
-	public Textbeitrag(Date datum, String inhalt){
+	public Textbeitrag( String inhalt){
 		
-		this.datum = datum;
+		//this.datum = date;
 		this.inhalt = inhalt;
 	};
 	
