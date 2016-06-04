@@ -3,11 +3,16 @@
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Vector;
 
 import client.Blogeintrag;
+import client.Kommentar;
 import client.Person;
 import client.Textbeitrag;
 import db.BlogMapper;
+import db.KommentarMapper;
+import db.PersonMapper;
+import db.TextbeitragMapper;
 
 
 
@@ -16,21 +21,94 @@ public class BlogAdministration {
 	
 	private Blogeintrag blogeintrag = null;
 	private BlogMapper bMapper = null;
+	private PersonMapper pMapper = null;
+	private TextbeitragMapper tMapper = null;
+	private KommentarMapper kMapper = null;
 	
 	public BlogAdministration(){
 		this.bMapper = BlogMapper.blogMapper();
+		this.pMapper = PersonMapper.personMapper();
+		this.tMapper = TextbeitragMapper.textbeitragMapper();
+		this. kMapper = KommentarMapper.kommentarMapper();
+		
 
 	}
 	
+	
+	
+	public Vector<Blogeintrag> findAll() throws SQLException{
+		
+		return bMapper.findAll();
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	public Person createPerson() throws SQLException {
+		
+		
+		//Daten kommen später über servlet
+		String name = "Fabian";
+		String vorname = "Tschullik";
+		String email = "ft027@hdm-stuttgart.de";
+		
+		Person pers = new Person(name, vorname, email);
+		
+		if (pMapper.checkIfExists(pers) == null)
+			
+		{
+			return pMapper.add(pers);
+		
+		}
+		
+		return pMapper.checkIfExists(pers);
+				
+	}
+	
+	
+	
+	
+	public Integer createKommentar(Integer id ) throws SQLException   {
+		
+		
+		Person pers;
+	    pers = createPerson();
+		
+		String inhaltKommentar = "Das ist ein Kommentar";
+		Textbeitrag txtb = new Textbeitrag(inhaltKommentar);
+		
+		txtb = tMapper.add(txtb, pers);
+		
+		Kommentar kommentar = new Kommentar(txtb, pers);
+		kommentar.setId(txtb.getId());
+		
+		
+		kMapper.add(kommentar, id);
+		
+		
+		
+		
+		
+		return kommentar.getId();
+	}
+	
+	
+	public Vector<Kommentar> geKommentarByID(Integer id) throws SQLException{
+		
+		return kMapper.findAllforID(55);
+		
+	}
+	
+	
+	
 	public void createBlogeintrag() throws SQLException{
 		
-		//Person Anlegen
-		//Daten aus Formular lesen
-		String value1 = "1";
-		String value2 = "2";
-		String value3 = "3";
 		
-		Person pers = new Person(value1, value2, value3);
 			
 		//Textbeitrag anlegen
 		//Daten aus Formular lesen
@@ -43,7 +121,7 @@ public class BlogAdministration {
 		String titel = "Titel";
 		String untertitel = "Untertitel";
 		
-		Blogeintrag blogeintr = new Blogeintrag(txtb, pers, inhalt, untertitel);
+		Blogeintrag blogeintr = new Blogeintrag(txtb, createPerson(), inhalt, untertitel);
 		
 		
 	bMapper.add(blogeintr);

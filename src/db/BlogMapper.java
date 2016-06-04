@@ -35,11 +35,10 @@ public class BlogMapper {
 		   
 		            Statement stmt = con.createStatement();
 		            ResultSet rs = stmt.executeQuery(
-		            		"select * from blogeintrag join textbeitrag on textbeitrag.id = blogeintrag.fk_textbeitrag join person on person.id = textbeitrag.fk_person ORDER BY blogeintrag.id");
+		            		"select * from blogeintrag join textbeitrag on textbeitrag.id = blogeintrag.id join person on person.id = textbeitrag.fk_person ORDER BY blogeintrag.id");
 		           
 		            
-		            
-		            // Fuer jeden Eintrag im Suchergebnis wird nun ein Customer-Objekt erstellt.
+		           
 		            while (rs.next()) {
 		            	
 		            	//Textbeitrag erstellen
@@ -79,14 +78,20 @@ public class BlogMapper {
 		
 		Connection con = DBConnection.connection();
 		
-		//Person erstellen
+	
 		
-		String insertTableSQL = "INSERT INTO person "
-				+ "(name, vorname) VALUES "
-				+ "(?,?)";
+		
+		
+		//Textbeitrag erstellen
+		
+		String insertTableSQL = "INSERT INTO textbeitrag "
+				+ "(datum, inhalt, fk_person) VALUES "
+				+ "(?,?,?)";
+		
 		PreparedStatement preparedStatement = con.prepareStatement(insertTableSQL, Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setString(1, blogeintrag.person.getName());
-		preparedStatement.setString(2, "asdad222");
+		preparedStatement.setDate(1, blogeintrag.textbeitrag.getDatum());
+		preparedStatement.setString(2, blogeintrag.textbeitrag.getInhalt());
+		preparedStatement.setInt(3, blogeintrag.person.getId());
 	
 		// execute insert SQL stetement
 		preparedStatement.executeUpdate();
@@ -95,34 +100,16 @@ public class BlogMapper {
 		key.next();
 		int id = key.getInt(1);
 		
-		
-		//Textbeitrag erstellen
-		
-		insertTableSQL = "INSERT INTO textbeitrag "
-				+ "(datum, inhalt, fk_person) VALUES "
-				+ "(?,?,?)";
-		preparedStatement = con.prepareStatement(insertTableSQL, Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setDate(1, blogeintrag.textbeitrag.getDatum());
-		preparedStatement.setString(2, blogeintrag.textbeitrag.getInhalt());
-		preparedStatement.setInt(3, id);
-	
-		// execute insert SQL stetement
-		preparedStatement.executeUpdate();
-		
-		key = preparedStatement.getGeneratedKeys();
-		key.next();
-		id = key.getInt(1);
-		
 		//Blogeintrag erstellen
 		
 		insertTableSQL = "INSERT INTO blogeintrag "
-				+ "(titel, untertitel, fk_textbeitrag) VALUES "
+				+ "(id, titel, untertitel) VALUES "
 				+ "(?,?,?)";
 		preparedStatement = con.prepareStatement(insertTableSQL, Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setString(1, blogeintrag.getTitel());
-		preparedStatement.setString(2, blogeintrag.getUntertitel());
-		preparedStatement.setInt(3, id);
-	
+		preparedStatement.setInt(1, id);
+		preparedStatement.setString(2, blogeintrag.getTitel());
+		preparedStatement.setString(3, blogeintrag.getUntertitel());
+		
 		// execute insert SQL stetement
 		preparedStatement.executeUpdate();
 		

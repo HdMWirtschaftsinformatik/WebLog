@@ -2,6 +2,7 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import client.Blogeintrag;
+import client.Kommentar;
 import db.BlogMapper;
 
 
@@ -12,12 +13,13 @@ public class Test {
 		
 		//Test Blogeinträge auslesen
 		
-		BlogMapper bm = new BlogMapper();
+		BlogAdministration adm = new BlogAdministration();
+		
 		
 		Vector<Blogeintrag> b = new Vector<Blogeintrag>();
 		
 		// Ruft die Methode findAll in der Klasse BlogMapper auf
-		b = bm.findAll();
+		b = adm.findAll();
 		
 		// findAll liefert einen Vector mit allen Blogeintrag-Objekten zurück
 		// Diese werden ausgegeben
@@ -29,17 +31,16 @@ public class Test {
 		}
 		
 		
-		//Blogeintrag anlegen
-		
-		//Ruft die Methode add in der Klasse BlogMapper auf.
-		//Dieser Methode wird ein Blogeintrag übergeben
-		bm.add(b.get(0));
-		
-		BlogAdministration adm = new BlogAdministration();
-		
 		adm.createBlogeintrag();
-		adm.deleteBlogeintrag(3);
 		
+		adm.createKommentar(55);
+		
+		
+		Vector<Kommentar> kommentare = adm.geKommentarByID(55);
+		
+		
+		
+		System.out.println(kommentare.get(0).person.getVorname());
 		
 
 	}

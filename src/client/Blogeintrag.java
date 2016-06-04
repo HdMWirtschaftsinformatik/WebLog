@@ -1,9 +1,14 @@
 package client;
 
 import java.sql.Date;
+import java.util.Vector;
 
 public class Blogeintrag {
-	public int id;
+	
+	Vector<Kommentar> kommentare = null;
+	
+	
+	int id;
 	public int getId() {
 		return id;
 	}
