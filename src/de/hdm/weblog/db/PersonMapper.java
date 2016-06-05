@@ -1,7 +1,7 @@
-package db;
+package de.hdm.weblog.db;
 import java.sql.*;
 
-import client.Person;
+import de.hdm.weblog.Person;
 
 
 public class PersonMapper {

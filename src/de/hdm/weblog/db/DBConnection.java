@@ -1,4 +1,4 @@
-package db;
+package de.hdm.weblog.db;
 import java.sql.*;
 
 /**

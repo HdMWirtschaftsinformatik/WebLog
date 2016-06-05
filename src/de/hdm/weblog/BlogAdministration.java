@@ -1,18 +1,13 @@
+package de.hdm.weblog;
 
 
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Vector;
 
-import client.Blogeintrag;
-import client.Kommentar;
-import client.Person;
-import client.Textbeitrag;
-import db.BlogMapper;
-import db.KommentarMapper;
-import db.PersonMapper;
-import db.TextbeitragMapper;
+import de.hdm.weblog.db.BlogMapper;
+import de.hdm.weblog.db.KommentarMapper;
+import de.hdm.weblog.db.PersonMapper;
+import de.hdm.weblog.db.TextbeitragMapper;
 
 
 

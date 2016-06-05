@@ -1,11 +1,15 @@
-package db;
-import java.sql.*;
-import java.text.SimpleDateFormat;
+package de.hdm.weblog.db;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Vector;
 
-import client.Blogeintrag;
-import client.Person;
-import client.Textbeitrag;
+import de.hdm.weblog.Blogeintrag;
+import de.hdm.weblog.Person;
+import de.hdm.weblog.Textbeitrag;
 
 public class BlogMapper {
 	

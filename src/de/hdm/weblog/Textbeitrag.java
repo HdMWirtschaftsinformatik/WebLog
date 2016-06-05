@@ -1,4 +1,5 @@
-package client;
+package de.hdm.weblog;
+
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;

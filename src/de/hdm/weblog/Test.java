@@ -1,9 +1,8 @@
+package de.hdm.weblog;
 import java.sql.SQLException;
 import java.util.Vector;
 
-import client.Blogeintrag;
-import client.Kommentar;
-import db.BlogMapper;
+import de.hdm.weblog.db.BlogMapper;
 
 
 
