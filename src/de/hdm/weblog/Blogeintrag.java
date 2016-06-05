@@ -37,22 +37,25 @@ public class Blogeintrag extends Textbeitrag {
 	public void setUntertitel(String untertitel) {
 		this.untertitel = untertitel;
 	}
-	
+
 	public Vector<Kommentar> getKommentare() {
 		return kommentare;
 	}
-	
+
 	public void setKommentare(Vector<Kommentar> koms) {
 		kommentare = koms;
 	}
-	
-	public void addKommentar(Kommentar k){
+
+	public void addKommentar(Kommentar k) {
 		kommentare.add(k);
 	}
 
-	public String toString() {
-		return autor.toString() + ": " + titel + " (" + untertitel + ") " + "\n" + inhalt; 
+	public void removeKommentar(Kommentar k) {
+		kommentare.remove(k);
 	}
-	
+
+	public String toString() {
+		return autor.toString() + ": " + titel + " (" + untertitel + ") " + ": " + inhalt;
+	}
 
 }

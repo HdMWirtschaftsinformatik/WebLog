@@ -11,6 +11,8 @@ public class CreateBlogeintrag {
 		BlogAdministration adm = new BlogAdministration();		
 		Person p = adm.findPersonByEmail("rathke@hdm-stuttgart.de");
 		adm.createBlogeintrag("Das ist der Inhalt des Blogeintrags", p, "Titel", "Untertitel");		
+		
+		ShowAll.main(new String[0]);
 
 	}
 

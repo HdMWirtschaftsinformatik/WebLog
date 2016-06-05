@@ -15,6 +15,13 @@ public class Textbeitrag {
 		//this.datum = date;
 		this.inhalt = inhalt;
 	};
+
+	public boolean equals(Object o) {
+		if (o instanceof Textbeitrag) {
+			return id == ((Textbeitrag) o).getId();
+		}
+		return super.equals(o);
+	}
 	
 	
 	public int getId() {

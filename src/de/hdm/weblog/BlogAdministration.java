@@ -73,9 +73,15 @@ public class BlogAdministration {
 	}
 
 	public void deleteBlogeintrag(Blogeintrag be) {
-
+		for (Kommentar kom : be.getKommentare()) {
+			deleteKommentar(kom);
+		}
 		bMapper.delete(be);
-
+	}
+	
+	public void deleteKommentar(Kommentar kom) {
+		kom.getBeitrag().removeKommentar(kom);
+		kMapper.delete(kom);
 	}
 
 }

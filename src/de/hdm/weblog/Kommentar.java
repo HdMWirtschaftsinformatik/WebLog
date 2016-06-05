@@ -18,4 +18,8 @@ public class Kommentar extends Textbeitrag {
 		beitrag = b;
 	}
 
+	public String toString() {
+		return autor.toString() + ": "  + inhalt; 
+	}
+
 }
