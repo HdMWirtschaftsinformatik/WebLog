@@ -1,136 +1,81 @@
 package de.hdm.weblog;
 
-
-import java.sql.SQLException;
+import java.util.Date;
 import java.util.Vector;
 
 import de.hdm.weblog.db.BlogMapper;
 import de.hdm.weblog.db.KommentarMapper;
 import de.hdm.weblog.db.PersonMapper;
-import de.hdm.weblog.db.TextbeitragMapper;
-
-
-
 
 public class BlogAdministration {
-	
-	private Blogeintrag blogeintrag = null;
+
 	private BlogMapper bMapper = null;
 	private PersonMapper pMapper = null;
-	private TextbeitragMapper tMapper = null;
 	private KommentarMapper kMapper = null;
-	
-	public BlogAdministration(){
+
+	public BlogAdministration() {
 		this.bMapper = BlogMapper.blogMapper();
 		this.pMapper = PersonMapper.personMapper();
-		this.tMapper = TextbeitragMapper.textbeitragMapper();
-		this. kMapper = KommentarMapper.kommentarMapper();
-		
+		this.kMapper = KommentarMapper.kommentarMapper();
 
 	}
-	
-	
-	
-	public Vector<Blogeintrag> findAll() throws SQLException{
-		
-		return bMapper.findAll();
-		
-		
-		
+
+	public Vector<Blogeintrag> findAll() {
+		Vector<Blogeintrag> blogs = bMapper.findAll();
+		for (Blogeintrag be : blogs) {
+			be.setKommentare(kMapper.findAllForBlogeintrag(be));
+		}
+		return blogs;
 	}
-	
-	
-	
-	
-	
-	
-	public Person createPerson() throws SQLException {
-		
-		
-		//Daten kommen später über servlet
-		String name = "Fabian";
-		String vorname = "Tschullik";
-		String email = "ft027@hdm-stuttgart.de";
-		
-		Person pers = new Person(name, vorname, email);
-		
-		if (pMapper.checkIfExists(pers) == null)
-			
-		{
-			return pMapper.add(pers);
-		
+
+	public Person createPerson(String name, String vorname, String email) {
+
+		Person pers = pMapper.findByEmail(email);
+		if (pers != null) {
+			return pers; 
 		}
 		
-		return pMapper.checkIfExists(pers);
-				
-	}
-	
-	
-	
-	
-	public Integer createKommentar(Integer id ) throws SQLException   {
+		pers = new Person(name, vorname, email);
+		pMapper.add(pers);
 		
-		
-		Person pers;
-	    pers = createPerson();
-		
-		String inhaltKommentar = "Das ist ein Kommentar";
-		Textbeitrag txtb = new Textbeitrag(inhaltKommentar);
-		
-		txtb = tMapper.add(txtb, pers);
-		
-		Kommentar kommentar = new Kommentar(txtb, pers);
-		kommentar.setId(txtb.getId());
-		
-		
-		kMapper.add(kommentar, id);
-		
-		
-		
-		
-		
-		return kommentar.getId();
-	}
-	
-	
-	public Vector<Kommentar> geKommentarByID(Integer id) throws SQLException{
-		
-		return kMapper.findAllforID(55);
-		
-	}
-	
-	
-	
-	public void createBlogeintrag() throws SQLException{
-		
-		
-			
-		//Textbeitrag anlegen
-		//Daten aus Formular lesen
+		return pers;
 
-		String inhalt = "Dies ist der Inhalt aus dem Formular";
-		Textbeitrag txtb = new Textbeitrag(inhalt);
-		
-		//Blogeintrag anlegen
-		//Daten aus Formular lesen
-		String titel = "Titel";
-		String untertitel = "Untertitel";
-		
-		Blogeintrag blogeintr = new Blogeintrag(txtb, createPerson(), inhalt, untertitel);
-		
-		
-	bMapper.add(blogeintr);
-		
-			
 	}
 	
-	public void deleteBlogeintrag(int id) throws SQLException{
-		
-		bMapper.delete(id);
-			
+	public Person findPersonByEmail(String email) {
+		return pMapper.findByEmail(email);
 	}
-	
-	
-	
+
+	public Kommentar createKommentar(String inhalt, Person autor, Blogeintrag be) {
+
+		Kommentar kommentar = new Kommentar(inhalt);
+		kommentar.setBeitrag(be);
+		kommentar.setAutor(autor);
+		kommentar.setDatum(new Date());
+		be.addKommentar(kommentar);
+
+		kMapper.add(kommentar);
+
+		return kommentar;
+	}
+
+	public Blogeintrag createBlogeintrag(String inhalt, Person autor, String titel, String utitel) {
+
+		// Textbeitrag anlegen
+		// Daten aus Formular lesen
+
+		Blogeintrag blogeintr = new Blogeintrag(inhalt, autor, new Date(), titel, utitel);
+
+		bMapper.add(blogeintr);
+		
+		return blogeintr;
+
+	}
+
+	public void deleteBlogeintrag(Blogeintrag be) {
+
+		bMapper.delete(be);
+
+	}
 
 }

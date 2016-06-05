@@ -1,106 +1,150 @@
 package de.hdm.weblog.db;
 
 import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
+import de.hdm.weblog.Blogeintrag;
 import de.hdm.weblog.Kommentar;
-import de.hdm.weblog.Person;
-import de.hdm.weblog.Textbeitrag;
 
 public class KommentarMapper {
-	
 
-	
 	private static KommentarMapper kommentarMapper = null;
-	
-	 public KommentarMapper() {
-	    }
 
-	 
-	  public static KommentarMapper kommentarMapper() {
-	        if (kommentarMapper == null) {
-	            kommentarMapper = new KommentarMapper();
-	        }
-	        return kommentarMapper;
-	    }
-	
-	
-	
-	public void add(Kommentar kommentar, Integer id) throws SQLException {
-		
-		
-		Connection con = DBConnection.connection();
-		
-		String insertTableSQL = "INSERT INTO kommentar "
-				+ "(id, fk_blogeintrag) VALUES "
-				+ "(?,?)";
-		PreparedStatement preparedStatement = con.prepareStatement(insertTableSQL);
-		preparedStatement.setInt(1, kommentar.getId());
-		preparedStatement.setInt(2, id);
-		
-	
-		// execute insert SQL stetement
-		preparedStatement.executeUpdate();
-		
-
-		
-		
-		
+	public KommentarMapper() {
 	}
-	
-	public Vector<Kommentar> findAllforID(Integer id) throws SQLException{
-		
-		Connection con = DBConnection.connection();
 
-		 Statement stmt = con.createStatement();
-         ResultSet rs = stmt.executeQuery("select id from kommentar where fk_blogeintrag = "+id);
-         
-    	 Vector<Kommentar> result = new Vector<Kommentar>();
-
-         
-         while (rs.next()) {
-        	 
-        	 int kommentarID = rs.getInt("id");
-        	 System.out.println(kommentarID);
-        	 
-        	 
-        	 Connection con2 = DBConnection.connection();
-    		 Statement stmt2 = con2.createStatement();
-             ResultSet rs2 = stmt2.executeQuery("SELECT * from textbeitrag join person on person.id = textbeitrag.fk_person where textbeitrag.id = "+kommentarID);
-             
-             
-             while (rs2.next()) {
-            	 
-            String name = rs2.getString("name");
-            String vorname = rs2.getString("vorname");
-            String email = rs2.getString("email");
-            
-            	 
-            Person pers = new Person(name, vorname, email);	
-            
-            String inhalt = rs2.getString("inhalt");
-            Date datum = rs2.getDate("datum");
-            
-            Textbeitrag txtbt = new Textbeitrag(inhalt);
-            txtbt.setDatum(datum);
-            	 
-            	 
-            Kommentar kommentar = new Kommentar(txtbt, pers);
-            result.addElement(kommentar);
-             System.out.println(rs2.getString("inhalt"));
-        	 
-        	 
-             }	
-		
-		
+	public static KommentarMapper kommentarMapper() {
+		if (kommentarMapper == null) {
+			kommentarMapper = new KommentarMapper();
+		}
+		return kommentarMapper;
 	}
+
+	public Vector<Kommentar> findAll() {
+		Connection con = DBConnection.connection();
+		Vector<Kommentar> result = new Vector<Kommentar>();
+
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("select * from Textbeitrag, Kommentar "
+					+ "where Textbeitrag.id = Kommentar.id " + "ORDER BY Kommentar.id");
+
+			while (rs.next()) {
+				Kommentar kom = new Kommentar(rs.getString("Textbeitrag.inhalt"));
+
+				// Blogeintrag erstellen
+				kom.setId(rs.getInt("Textbeitrag.id"));
+				kom.setDatum(rs.getDate("Textbeitrag.datum"));
+				kom.setAutor(PersonMapper.personMapper().findById(rs.getInt("Textbeitrag.autor")));
+				kom.setBeitrag(BlogMapper.blogMapper().findById(rs.getInt("Kommentar.blogeintrag")));
+
+				result.addElement(kom);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// Ergebnisvektor zurueckgeben
 		return result;
 	}
+
+	public Kommentar findById(int id) {
+		Connection con = DBConnection.connection();
+
+		Statement stmt;
+		Kommentar kom = null;
+		try {
+			stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("select * from Textbeitrag, Kommentar "
+					+ "where Textbeitrag.id = Kommentar.id and Kommentar.id = " + id);
+
+			if (rs.next()) {
+				kom = new Kommentar(rs.getString("Textbeitrag.inhalt"));
+
+				// Kommentar erstellen
+				kom.setId(rs.getInt("Textbeitrag.id"));
+				kom.setDatum(rs.getDate("Textbeitrag.datum"));
+				kom.setAutor(PersonMapper.personMapper().findById(rs.getInt("Textbeitrag.autor")));
+				kom.setBeitrag(BlogMapper.blogMapper().findById(rs.getInt("Kommentar.blogbeitrag")));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return kom;
+	}
 	
+	public Vector<Kommentar> findAllForBlogeintrag(Blogeintrag be) {
+		Connection con = DBConnection.connection();
+		Vector<Kommentar> result = new Vector<Kommentar>();
+
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("select * from Textbeitrag, Kommentar "
+					+ "where Textbeitrag.id = Kommentar.id and Kommentar.blogeintrag = "
+					+ be.getId());
+
+			while (rs.next()) {
+				Kommentar kom = new Kommentar(rs.getString("Textbeitrag.inhalt"));
+
+				// Blogeintrag erstellen
+				kom.setId(rs.getInt("Textbeitrag.id"));
+				kom.setDatum(rs.getDate("Textbeitrag.datum"));
+				kom.setAutor(PersonMapper.personMapper().findById(rs.getInt("Textbeitrag.autor")));
+				kom.setBeitrag(BlogMapper.blogMapper().findById(rs.getInt("Kommentar.blogeintrag")));
+
+				result.addElement(kom);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// Ergebnisvektor zurueckgeben
+		return result;
+	}
+
+	public int add(Kommentar kommentar) {
+
+		int id = TextbeitragMapper.textbeitragMapper().add(kommentar);
+		if (id == 0) {
+			return 0;
+		} else {
+			kommentar.setId(id);
+		}
+
+		Connection con = DBConnection.connection();
+		try {
+			Statement statement = con.createStatement();
+			statement.executeUpdate("INSERT INTO Kommentar (id, blogeintrag) VALUES (" + id + ","
+					+ kommentar.getBeitrag().getId() + ")");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return id;
+
+	}
+
+	public void delete(Kommentar kommentar) {
+
+		TextbeitragMapper.textbeitragMapper().delete(kommentar);
+
+		Connection con = DBConnection.connection();
+		Statement stmt;
+		try {
+			stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM Kommentar " + "WHERE id = " + kommentar.getId());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 
 }

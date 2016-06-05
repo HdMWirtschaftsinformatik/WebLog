@@ -1,16 +1,12 @@
 package de.hdm.weblog.db;
 
 import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
 import de.hdm.weblog.Blogeintrag;
-import de.hdm.weblog.Person;
-import de.hdm.weblog.Textbeitrag;
 
 public class BlogMapper {
 
@@ -26,25 +22,30 @@ public class BlogMapper {
 		return blogMapper;
 	}
 
-	public Vector<Blogeintrag> findAll() throws SQLException {
+	public Vector<Blogeintrag> findAll() {
 		Connection con = DBConnection.connection();
 		Vector<Blogeintrag> result = new Vector<Blogeintrag>();
 
-		Statement stmt = con.createStatement();
-		ResultSet rs = stmt.executeQuery("select * from textbeitrag, blogeintrag "
-				+ "where textbeitrag.id = blogeintrag.id " + "ORDER BY blogeintrag.id");
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("select * from Textbeitrag, Blogeintrag "
+					+ "where Textbeitrag.id = Blogeintrag.id " + "ORDER BY Blogeintrag.id");
 
-		while (rs.next()) {
-			Blogeintrag be = new Blogeintrag(rs.getString("inhalt"));
+			while (rs.next()) {
+				Blogeintrag be = new Blogeintrag(rs.getString("Textbeitrag.inhalt"));
 
-			// Blogeintrag erstellen
-			be.setId(rs.getInt("id"));
-			be.setDatum(rs.getDate("datum"));
-			be.setTitel(rs.getString("titel"));
-			be.setUntertitel(rs.getString("untertitel"));
-			be.setAutor(PersonMapper.personMapper().findById(rs.getInt("autor")));
+				// Blogeintrag erstellen
+				be.setId(rs.getInt("Textbeitrag.id"));
+				be.setDatum(rs.getDate("Textbeitrag.datum"));
+				be.setTitel(rs.getString("Blogeintrag.titel"));
+				be.setUntertitel(rs.getString("Blogeintrag.untertitel"));
+				be.setAutor(PersonMapper.personMapper().findById(rs.getInt("Textbeitrag.autor")));
 
-			result.addElement(be);
+				result.addElement(be);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		// Ergebnisvektor zurueckgeben
@@ -53,76 +54,68 @@ public class BlogMapper {
 
 	public Blogeintrag findById(int id) {
 		Connection con = DBConnection.connection();
+		Blogeintrag be = null;
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("select * from Textbeitrag, Blogeintrag "
+					+ "where Textbeitrag.id = Blogeintrag.id and Blogeintrag.id = " + id);
 
-		Statement stmt = con.createStatement();
-		ResultSet rs = stmt.executeQuery("select * from textbeitrag, blogeintrag "
-				+ "where textbeitrag.id = blogeintrag.id and blogeintrag.id = " + id);
+			if (rs.next()) {
+				be = new Blogeintrag(rs.getString("Textbeitrag.inhalt"));
 
-		if (rs.next()) {
-			Blogeintrag be = new Blogeintrag(rs.getString("inhalt"));
-
-			// Blogeintrag erstellen
-			be.setId(rs.getInt("id"));
-			be.setDatum(rs.getDate("datum"));
-			be.setTitel(rs.getString("titel"));
-			be.setUntertitel(rs.getString("untertitel"));
-			be.setAutor(PersonMapper.personMapper().findById(rs.getInt("autor")));
-
-			return be;
-		} else {
-			return null;
+				// Blogeintrag erstellen
+				be.setId(rs.getInt("Textbeitrag.id"));
+				be.setDatum(rs.getDate("Textbeitrag.datum"));
+				be.setTitel(rs.getString("Blogeintrag.titel"));
+				be.setUntertitel(rs.getString("Blogeintrag.untertitel"));
+				be.setAutor(PersonMapper.personMapper().findById(rs.getInt("Textbeitrag.autor")));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		return be;
 	}
 
-	public void add(Blogeintrag blogeintrag) {
+	public int add(Blogeintrag blogeintrag) {
+
+		int id = TextbeitragMapper.textbeitragMapper().add(blogeintrag);
+		if (id == 0) {
+			return 0;
+		} else {
+			blogeintrag.setId(id);
+		}
 
 		Connection con = DBConnection.connection();
-
-		// Textbeitrag erstellen
-
-		String insertTableSQL = "INSERT INTO textbeitrag " + "(datum, inhalt, fk_person) VALUES " + "(?,?,?)";
-
-		PreparedStatement preparedStatement = con.prepareStatement(insertTableSQL, Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setDate(1, blogeintrag.textbeitrag.getDatum());
-		preparedStatement.setString(2, blogeintrag.textbeitrag.getInhalt());
-		preparedStatement.setInt(3, blogeintrag.person.getId());
-
-		// execute insert SQL stetement
-		preparedStatement.executeUpdate();
-
-		ResultSet key = preparedStatement.getGeneratedKeys();
-		key.next();
-		int id = key.getInt(1);
-
-		// Blogeintrag erstellen
-
-		insertTableSQL = "INSERT INTO blogeintrag " + "(id, titel, untertitel) VALUES " + "(?,?,?)";
-		preparedStatement = con.prepareStatement(insertTableSQL, Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setInt(1, id);
-		preparedStatement.setString(2, blogeintrag.getTitel());
-		preparedStatement.setString(3, blogeintrag.getUntertitel());
-
-		// execute insert SQL stetement
-		preparedStatement.executeUpdate();
-
-		key = preparedStatement.getGeneratedKeys();
-		key.next();
-		id = key.getInt(1);
+		try {
+			Statement statement = con.createStatement();
+			statement.executeUpdate("INSERT INTO Blogeintrag " + "(id, titel, untertitel) VALUES ("
+			+ id + ", "
+			+ "\"" + blogeintrag.getTitel() + "\", " 
+			+ "\"" + blogeintrag.getUntertitel() + "\")");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return id;
 
 	}
 
-	public void delete(int id) throws SQLException {
+	public void delete(Blogeintrag blogeintrag) {
+
+		TextbeitragMapper.textbeitragMapper().delete(blogeintrag);
 
 		Connection con = DBConnection.connection();
-
-		Statement stmt = con.createStatement();
-
-		String sql = "DELETE FROM blogeintrag " + "WHERE id = " + id;
-
-		stmt.executeUpdate(sql);
+		Statement stmt;
+		try {
+			stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM Blogeintrag " + "WHERE id = " + blogeintrag.getId());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
-
-	// public addKommentar (Kommentar kommentar){}
 
 }

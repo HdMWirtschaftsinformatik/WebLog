@@ -18,55 +18,66 @@ public class PersonMapper {
 		return personMapper;
 	}
 
-	public Person checkIfExists(Person person) throws SQLException {
-
-		String asd = "adfsf \"";
-
+	public Person findById(int id) {
 		Connection con = DBConnection.connection();
 
-		Statement stmt = con.createStatement();
-
-		ResultSet rs = stmt.executeQuery("SELECT id FROM person " + "WHERE email = \"" + person.getEmail() + "\"");
-
-		if (rs.first() == false) {
-			return null;
+		Person person = null;
+		Statement stmt;
+		try {
+			stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM person " + "WHERE id = " + id);
+			if (rs.next()) {
+				person = new Person(rs.getString("nachname"), rs.getString("vorname"), rs.getString("email"));
+				person.setId(rs.getInt("id"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-
-		else {
-
-			rs.first();
-			person.setId(rs.getInt("id"));
-			return person;
-		}
-
+		return person;
 	}
 
-	public Person add(Person person) {
+	public Person findByEmail(String email) {
+		Connection con = DBConnection.connection();
+
+		Person person = null;
+		Statement stmt;
+		try {
+			stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM person " + "WHERE email = \"" + email + "\"");
+			if (rs.next()) {
+				person = new Person(rs.getString("nachname"), rs.getString("vorname"), rs.getString("email"));
+				person.setId(rs.getInt("id"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return person;
+	}
+
+	public int add(Person person) {
 		Connection con = DBConnection.connection();
 
 		// Person erstellen
-
-		String insertTableSQL = "INSERT INTO person " + "(name, vorname, email) VALUES " + "(?,?,?)";
-		PreparedStatement preparedStatement;
+		int id = 0;
+		String insertTableSQL = "INSERT INTO person (nachname, vorname, email) VALUES " + "(" + "\"" + person.getName()
+				+ "\", " + "\"" + person.getVorname() + "\", " + "\"" + person.getEmail() + "\")";
 		try {
-			preparedStatement = con.prepareStatement(insertTableSQL, Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setString(1, person.getName());
-			preparedStatement.setString(2, person.getVorname());
-			preparedStatement.setString(3, person.getEmail());
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate(insertTableSQL, Statement.RETURN_GENERATED_KEYS);
 
-			// execute insert SQL stetement
-			preparedStatement.executeUpdate();
-
-			ResultSet key = preparedStatement.getGeneratedKeys();
-			key.next();
-			int id = key.getInt(1);
-			person.setId(id);
+			ResultSet key = stmt.getGeneratedKeys();
+			if (key.next()) {
+				id = key.getInt(1);
+				person.setId(id);
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		return person;
+		return id;
 
 	}
 

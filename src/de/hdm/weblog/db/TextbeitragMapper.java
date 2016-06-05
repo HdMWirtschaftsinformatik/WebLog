@@ -1,72 +1,63 @@
 package de.hdm.weblog.db;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 
-import de.hdm.weblog.Person;
 import de.hdm.weblog.Textbeitrag;
 
 public class TextbeitragMapper {
-	
 
 	private static TextbeitragMapper textbeitragMapper = null;
-	private Textbeitrag textbeitrag;
 
-	
-	 public TextbeitragMapper() {
-	    }
+	public TextbeitragMapper() {
+	}
 
-	 
-	  public static TextbeitragMapper textbeitragMapper() {
-	        if (textbeitragMapper == null) {
-	            textbeitragMapper = new TextbeitragMapper();
-	        }
-	        return textbeitragMapper;
-	    }
-	 
+	public static TextbeitragMapper textbeitragMapper() {
+		if (textbeitragMapper == null) {
+			textbeitragMapper = new TextbeitragMapper();
+		}
+		return textbeitragMapper;
+	}
 
-	  
-	  
-	  public Textbeitrag add(Textbeitrag textbeitrag, Person person) throws SQLException{
-		
-		  this.textbeitrag = textbeitrag;
-			
-			Connection con = DBConnection.connection();
-			
-			//Person erstellen
-			
-			String insertTableSQL = "INSERT INTO textbeitrag "
-					+ "(inhalt, fk_person) VALUES "
-					+ "(?,?)";
-			PreparedStatement preparedStatement = con.prepareStatement(insertTableSQL, Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setString(1, textbeitrag.getInhalt());
-			preparedStatement.setInt(2, person.getId());
-	
-			
-		
-			// execute insert SQL stetement
-			preparedStatement.executeUpdate();
-			
-			ResultSet key = preparedStatement.getGeneratedKeys();
-			key.next();
-			int id = key.getInt(1);
-			textbeitrag.setId(id);
-		  
-		  
-		  
-		  
-		  return textbeitrag;
-		  
-		  
-	  }
-	  
-	  
-	  
-	  
-	  
-	  
-	  
+	public int add(Textbeitrag textbeitrag) {
+		SimpleDateFormat sdf = new SimpleDateFormat();
+		Connection con = DBConnection.connection();
+
+		Statement statement;
+		int id = 0;
+		try {
+			statement = con.createStatement();
+			String sqlString = "INSERT INTO Textbeitrag " + "(datum, inhalt, autor) VALUES (" 
+					+ "\"" + sdf.format(textbeitrag.getDatum()) + "\", "
+					+ "\"" + textbeitrag.getInhalt() + "\","
+					+ textbeitrag.getAutor().getId() + ")";
+			statement.executeUpdate(sqlString, Statement.RETURN_GENERATED_KEYS);
+			ResultSet rs = statement.getGeneratedKeys();
+			if (rs.next()) {
+				id = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return id;
+	}
+
+	public void delete(Textbeitrag textbeitrag) {
+
+		Connection con = DBConnection.connection();
+		Statement stmt;
+		try {
+			stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM Textbeitrag " + "WHERE id = " + textbeitrag.getId());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
 }

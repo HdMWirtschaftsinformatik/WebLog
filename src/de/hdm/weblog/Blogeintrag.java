@@ -1,6 +1,6 @@
 package de.hdm.weblog;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.Vector;
 
 public class Blogeintrag extends Textbeitrag {
@@ -42,10 +42,17 @@ public class Blogeintrag extends Textbeitrag {
 		return kommentare;
 	}
 	
+	public void setKommentare(Vector<Kommentar> koms) {
+		kommentare = koms;
+	}
+	
 	public void addKommentar(Kommentar k){
 		kommentare.add(k);
 	}
-	
+
+	public String toString() {
+		return autor.toString() + ": " + titel + " (" + untertitel + ") " + "\n" + inhalt; 
+	}
 	
 
 }
