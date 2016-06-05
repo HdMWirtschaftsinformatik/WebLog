@@ -3,29 +3,19 @@ package de.hdm.weblog;
 
 
 
-public class Kommentar {
+public class Kommentar extends Textbeitrag {
 	
-	public Person person;
-	Textbeitrag textbeitrag;
+	Blogeintrag beitrag;
 	
-	int id;
-	
-	public int getId() {
-		return id;
+	public Kommentar(String inhalt) {
+		super(inhalt);
 	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public Kommentar (Textbeitrag textbeitrag, Person person){
-		
-		this.textbeitrag = textbeitrag;
 	
-		this.person = person;
-		
-		
-		
+	public Blogeintrag getBeitrag() {
+		return beitrag;		
+	}
+	public void setBeitrag(Blogeintrag b){
+		beitrag = b;
 	}
 
 }

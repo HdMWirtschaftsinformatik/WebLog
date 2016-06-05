@@ -9,6 +9,7 @@ public class Textbeitrag {
 	int id;
 	Date datum;
 	String inhalt;
+	Person autor;
 	
 	public Textbeitrag( String inhalt){
 		
@@ -34,5 +35,11 @@ public class Textbeitrag {
 	}
 	public void setInhalt(String inhalt) {
 		this.inhalt = inhalt;
+	}
+	public Person getAutor() {
+		return autor;
+	}
+	public void setAutor(Person p){
+		autor = p;
 	}
 }

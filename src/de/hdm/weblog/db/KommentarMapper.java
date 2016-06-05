@@ -17,9 +17,6 @@ public class KommentarMapper {
 
 	
 	private static KommentarMapper kommentarMapper = null;
-	private Kommentar kommentar = null;
-	private int id;
-
 	
 	 public KommentarMapper() {
 	    }
@@ -35,14 +32,6 @@ public class KommentarMapper {
 	
 	
 	public void add(Kommentar kommentar, Integer id) throws SQLException {
-		
-		
-		
-		this.kommentar = kommentar;
-		this.id = id;
-		
-
-		
 		
 		
 		Connection con = DBConnection.connection();
