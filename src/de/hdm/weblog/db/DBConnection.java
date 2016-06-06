@@ -1,5 +1,7 @@
 package de.hdm.weblog.db;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  * Verwalten einer Verbindung zur Datenbank.
@@ -37,6 +39,7 @@ public class DBConnection {
 		// Wenn es bisher keine Conncetion zur DB gab, ...
 		if (con == null) {
 			try {
+				Class.forName("com.mysql.jdbc.Driver").newInstance();
 				/*
 				 * Der DriverManager nimmt eine Verbindung mit den
 				 * oben in der Variable url angegebenen Verbindungsinformationen
@@ -49,6 +52,15 @@ public class DBConnection {
 			} catch (SQLException e1) {
 				con = null;
 				e1.printStackTrace();
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 

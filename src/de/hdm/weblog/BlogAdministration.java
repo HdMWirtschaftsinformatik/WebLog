@@ -17,6 +17,8 @@ public class BlogAdministration {
 		this.bMapper = BlogMapper.blogMapper();
 		this.pMapper = PersonMapper.personMapper();
 		this.kMapper = KommentarMapper.kommentarMapper();
+		
+		createPerson("Blogger", "Jonny", "blogger");
 
 	}
 
@@ -26,6 +28,10 @@ public class BlogAdministration {
 			be.setKommentare(kMapper.findAllForBlogeintrag(be));
 		}
 		return blogs;
+	}
+	
+	public Blogeintrag findBlogeintragById(int id) {
+		return bMapper.findById(id);
 	}
 
 	public Person createPerson(String name, String vorname, String email) {
@@ -45,6 +51,10 @@ public class BlogAdministration {
 	public Person findPersonByEmail(String email) {
 		return pMapper.findByEmail(email);
 	}
+	
+	public Person findPersonById(int id) {
+		return pMapper.findById(id);
+	}
 
 	public Kommentar createKommentar(String inhalt, Person autor, Blogeintrag be) {
 
@@ -58,6 +68,14 @@ public class BlogAdministration {
 
 		return kommentar;
 	}
+	
+	public Kommentar createKommentar(String inhalt, Blogeintrag be) {
+		return createKommentar(inhalt, findPersonByEmail("blogger"), be);
+	}
+	
+	public Kommentar findKommentarById(int id) {
+		return kMapper.findById(id);
+	}
 
 	public Blogeintrag createBlogeintrag(String inhalt, Person autor, String titel, String utitel) {
 
@@ -70,6 +88,10 @@ public class BlogAdministration {
 		
 		return blogeintr;
 
+	}
+	
+	public Blogeintrag createBlogeintrag(String inhalt, String titel, String utitel) {
+		return createBlogeintrag(inhalt, findPersonByEmail("blogger"), titel, utitel);
 	}
 
 	public void deleteBlogeintrag(Blogeintrag be) {
