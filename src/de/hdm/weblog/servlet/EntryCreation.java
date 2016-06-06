@@ -46,25 +46,28 @@ public class EntryCreation extends HttpServlet {
 		}
 
 		Vector<Blogeintrag> blogs = verwaltung.findAll();
-		if (blogs.size()>0) {
-			be = blogs.get(blogs.size()-1);
-		}
-		// Set response content type
+		
+		
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		String docType = "<!doctype html public \"-//w3c//dtd html 4.0 " + "transitional//en\">\n";
 		out.println(docType);
 		out.println("<html><body>");
 
-		out.println("<h2>" + be.getTitel() + "</h2>\n"
-				+ "<h3>" + be.getUntertitel() +  "</h3>\n"
-				+ be.getInhalt());
-		
-		out.println("<ul>");
-		for (Kommentar kom : be.getKommentare()) {
-			out.println("<li>" + kom.getInhalt() + "</li>");
-		}
-		out.println("</ul>");
+		if (blogs.size()>0) {
+			be = blogs.get(blogs.size()-1);
+			out.println("<h2>" + be.getTitel() + "</h2>\n"
+					+ "<h3>" + be.getUntertitel() +  "</h3>\n"
+					+ be.getInhalt());
+			
+			out.println("<ul>");
+			for (Kommentar kom : be.getKommentare()) {
+				out.println("<li>" + kom.getInhalt() + "</li>");
+			}
+			out.println("</ul>");
+		} else {
+			out.println("<h2>Nothing here");
+		}			
 		
 		out.println("</body></html>");
 	}
