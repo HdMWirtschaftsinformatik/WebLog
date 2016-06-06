@@ -29,17 +29,17 @@ public class KommentarMapper {
 
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("select * from Textbeitrag, Kommentar "
-					+ "where Textbeitrag.id = Kommentar.id " + "ORDER BY Kommentar.id");
+			ResultSet rs = stmt.executeQuery("select * from textbeitrag, kommentar "
+					+ "where textbeitrag.id = kommentar.id " + "ORDER BY kommentar.id");
 
 			while (rs.next()) {
-				Kommentar kom = new Kommentar(rs.getString("Textbeitrag.inhalt"));
+				Kommentar kom = new Kommentar(rs.getString("textbeitrag.inhalt"));
 
 				// Blogeintrag erstellen
-				kom.setId(rs.getInt("Textbeitrag.id"));
-				kom.setDatum(rs.getDate("Textbeitrag.datum"));
-				kom.setAutor(PersonMapper.personMapper().findById(rs.getInt("Textbeitrag.autor")));
-				kom.setBeitrag(BlogMapper.blogMapper().findById(rs.getInt("Kommentar.blogeintrag")));
+				kom.setId(rs.getInt("textbeitrag.id"));
+				kom.setDatum(rs.getDate("textbeitrag.datum"));
+				kom.setAutor(PersonMapper.personMapper().findById(rs.getInt("textbeitrag.autor")));
+				kom.setBeitrag(BlogMapper.blogMapper().findById(rs.getInt("kommentar.blogeintrag")));
 
 				result.addElement(kom);
 			}
@@ -59,17 +59,17 @@ public class KommentarMapper {
 		Kommentar kom = null;
 		try {
 			stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("select * from Textbeitrag, Kommentar "
-					+ "where Textbeitrag.id = Kommentar.id and Kommentar.id = " + id);
+			ResultSet rs = stmt.executeQuery("select * from textbeitrag, kommentar "
+					+ "where textbeitrag.id = kommentar.id and kommentar.id = " + id);
 
 			if (rs.next()) {
-				kom = new Kommentar(rs.getString("Textbeitrag.inhalt"));
+				kom = new Kommentar(rs.getString("textbeitrag.inhalt"));
 
 				// Kommentar erstellen
-				kom.setId(rs.getInt("Textbeitrag.id"));
-				kom.setDatum(rs.getDate("Textbeitrag.datum"));
-				kom.setAutor(PersonMapper.personMapper().findById(rs.getInt("Textbeitrag.autor")));
-				kom.setBeitrag(BlogMapper.blogMapper().findById(rs.getInt("Kommentar.blogbeitrag")));
+				kom.setId(rs.getInt("textbeitrag.id"));
+				kom.setDatum(rs.getDate("textbeitrag.datum"));
+				kom.setAutor(PersonMapper.personMapper().findById(rs.getInt("textbeitrag.autor")));
+				kom.setBeitrag(BlogMapper.blogMapper().findById(rs.getInt("kommentar.blogbeitrag")));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -84,18 +84,18 @@ public class KommentarMapper {
 
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("select * from Textbeitrag, Kommentar "
-					+ "where Textbeitrag.id = Kommentar.id and Kommentar.blogeintrag = "
+			ResultSet rs = stmt.executeQuery("select * from textbeitrag, kommentar "
+					+ "where textbeitrag.id = kommentar.id and kommentar.blogeintrag = "
 					+ be.getId());
 
 			while (rs.next()) {
-				Kommentar kom = new Kommentar(rs.getString("Textbeitrag.inhalt"));
+				Kommentar kom = new Kommentar(rs.getString("textbeitrag.inhalt"));
 
 				// Blogeintrag erstellen
-				kom.setId(rs.getInt("Textbeitrag.id"));
-				kom.setDatum(rs.getDate("Textbeitrag.datum"));
-				kom.setAutor(PersonMapper.personMapper().findById(rs.getInt("Textbeitrag.autor")));
-				kom.setBeitrag(BlogMapper.blogMapper().findById(rs.getInt("Kommentar.blogeintrag")));
+				kom.setId(rs.getInt("textbeitrag.id"));
+				kom.setDatum(rs.getDate("textbeitrag.datum"));
+				kom.setAutor(PersonMapper.personMapper().findById(rs.getInt("textbeitrag.autor")));
+				kom.setBeitrag(BlogMapper.blogMapper().findById(rs.getInt("kommentar.blogeintrag")));
 
 				result.addElement(kom);
 			}
@@ -120,7 +120,7 @@ public class KommentarMapper {
 		Connection con = DBConnection.connection();
 		try {
 			Statement statement = con.createStatement();
-			statement.executeUpdate("INSERT INTO Kommentar (id, blogeintrag) VALUES (" + id + ","
+			statement.executeUpdate("INSERT INTO kommentar (id, blogeintrag) VALUES (" + id + ","
 					+ kommentar.getBeitrag().getId() + ")");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -139,7 +139,7 @@ public class KommentarMapper {
 		Statement stmt;
 		try {
 			stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM Kommentar " + "WHERE id = " + kommentar.getId());
+			stmt.executeUpdate("DELETE FROM kommentar " + "WHERE id = " + kommentar.getId());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

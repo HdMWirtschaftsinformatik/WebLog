@@ -30,7 +30,7 @@ public class TextbeitragMapper {
 		int id = 0;
 		try {
 			statement = con.createStatement();
-			String sqlString = "INSERT INTO Textbeitrag " + "(datum, inhalt, autor) VALUES (" 
+			String sqlString = "INSERT INTO textbeitrag " + "(datum, inhalt, autor) VALUES (" 
 					+ "\"" + sdf.format(textbeitrag.getDatum()) + "\", "
 					+ "\"" + textbeitrag.getInhalt() + "\","
 					+ textbeitrag.getAutor().getId() + ")";
@@ -52,7 +52,7 @@ public class TextbeitragMapper {
 		Statement stmt;
 		try {
 			stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM Textbeitrag " + "WHERE id = " + textbeitrag.getId());
+			stmt.executeUpdate("DELETE FROM textbeitrag " + "WHERE id = " + textbeitrag.getId());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

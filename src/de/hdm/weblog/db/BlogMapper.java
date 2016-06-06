@@ -28,18 +28,18 @@ public class BlogMapper {
 
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("select * from Textbeitrag, Blogeintrag "
-					+ "where Textbeitrag.id = Blogeintrag.id " + "ORDER BY Blogeintrag.id");
+			ResultSet rs = stmt.executeQuery("select * from textbeitrag, blogeintrag "
+					+ "where textbeitrag.id = blogeintrag.id " + "ORDER BY blogeintrag.id");
 
 			while (rs.next()) {
-				Blogeintrag be = new Blogeintrag(rs.getString("Textbeitrag.inhalt"));
+				Blogeintrag be = new Blogeintrag(rs.getString("textbeitrag.inhalt"));
 
 				// Blogeintrag erstellen
-				be.setId(rs.getInt("Textbeitrag.id"));
-				be.setDatum(rs.getDate("Textbeitrag.datum"));
-				be.setTitel(rs.getString("Blogeintrag.titel"));
-				be.setUntertitel(rs.getString("Blogeintrag.untertitel"));
-				be.setAutor(PersonMapper.personMapper().findById(rs.getInt("Textbeitrag.autor")));
+				be.setId(rs.getInt("textbeitrag.id"));
+				be.setDatum(rs.getDate("textbeitrag.datum"));
+				be.setTitel(rs.getString("blogeintrag.titel"));
+				be.setUntertitel(rs.getString("blogeintrag.untertitel"));
+				be.setAutor(PersonMapper.personMapper().findById(rs.getInt("textbeitrag.autor")));
 
 				result.addElement(be);
 			}
@@ -57,18 +57,18 @@ public class BlogMapper {
 		Blogeintrag be = null;
 		try {
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("select * from Textbeitrag, Blogeintrag "
-					+ "where Textbeitrag.id = Blogeintrag.id and Blogeintrag.id = " + id);
+			ResultSet rs = stmt.executeQuery("select * from textbeitrag, blogeintrag "
+					+ "where textbeitrag.id = blogeintrag.id and blogeintrag.id = " + id);
 
 			if (rs.next()) {
-				be = new Blogeintrag(rs.getString("Textbeitrag.inhalt"));
+				be = new Blogeintrag(rs.getString("textbeitrag.inhalt"));
 
 				// Blogeintrag erstellen
-				be.setId(rs.getInt("Textbeitrag.id"));
-				be.setDatum(rs.getDate("Textbeitrag.datum"));
-				be.setTitel(rs.getString("Blogeintrag.titel"));
-				be.setUntertitel(rs.getString("Blogeintrag.untertitel"));
-				be.setAutor(PersonMapper.personMapper().findById(rs.getInt("Textbeitrag.autor")));
+				be.setId(rs.getInt("textbeitrag.id"));
+				be.setDatum(rs.getDate("textbeitrag.datum"));
+				be.setTitel(rs.getString("blogeintrag.titel"));
+				be.setUntertitel(rs.getString("blogeintrag.untertitel"));
+				be.setAutor(PersonMapper.personMapper().findById(rs.getInt("textbeitrag.autor")));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -89,7 +89,7 @@ public class BlogMapper {
 		Connection con = DBConnection.connection();
 		try {
 			Statement statement = con.createStatement();
-			statement.executeUpdate("INSERT INTO Blogeintrag " + "(id, titel, untertitel) VALUES ("
+			statement.executeUpdate("INSERT INTO blogeintrag " + "(id, titel, untertitel) VALUES ("
 			+ id + ", "
 			+ "\"" + blogeintrag.getTitel() + "\", " 
 			+ "\"" + blogeintrag.getUntertitel() + "\")");
@@ -110,7 +110,7 @@ public class BlogMapper {
 		Statement stmt;
 		try {
 			stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM Blogeintrag " + "WHERE id = " + blogeintrag.getId());
+			stmt.executeUpdate("DELETE FROM blogeintrag " + "WHERE id = " + blogeintrag.getId());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
