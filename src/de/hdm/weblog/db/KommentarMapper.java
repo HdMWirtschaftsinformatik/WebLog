@@ -90,12 +90,10 @@ public class KommentarMapper {
 
 			while (rs.next()) {
 				Kommentar kom = new Kommentar(rs.getString("textbeitrag.inhalt"));
-
-				// Blogeintrag erstellen
 				kom.setId(rs.getInt("textbeitrag.id"));
 				kom.setDatum(rs.getDate("textbeitrag.datum"));
 				kom.setAutor(PersonMapper.personMapper().findById(rs.getInt("textbeitrag.autor")));
-				kom.setBeitrag(BlogMapper.blogMapper().findById(rs.getInt("kommentar.blogeintrag")));
+				kom.setBeitrag(be);
 
 				result.addElement(kom);
 			}
