@@ -30,6 +30,12 @@ public class BlogAdministration {
 		return blogs;
 	}
 	
+	public Vector<Blogeintrag> findAllLatestFirst() {
+		Vector<Blogeintrag> blogs = findAll();
+		blogs.sort(null);
+		return blogs;
+	}
+	
 	public Blogeintrag findBlogeintragById(int id) {
 		return bMapper.findById(id);
 	}

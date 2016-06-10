@@ -19,7 +19,7 @@ public class Kommentar extends Textbeitrag {
 	}
 
 	public String toString() {
-		return autor.toString() + ": "  + inhalt; 
+		return getAutor().toString() + ": "  + getInhalt(); 
 	}
 
 }

@@ -3,12 +3,12 @@ package de.hdm.weblog;
 
 import java.util.Date;
 
-public class Textbeitrag {
+public class Textbeitrag implements Comparable<Textbeitrag> {
 	
-	int id;
-	Date datum;
-	String inhalt;
-	Person autor;
+	private int id;
+	private Date datum;
+	private String inhalt;
+	private Person autor;
 	
 	public Textbeitrag( String inhalt){
 		
@@ -19,8 +19,16 @@ public class Textbeitrag {
 	public boolean equals(Object o) {
 		if (o instanceof Textbeitrag) {
 			return id == ((Textbeitrag) o).getId();
+		} else {
+			return false;
 		}
-		return super.equals(o);
+	}
+	
+	/**
+	 * for sorting oldest 
+	 */
+	public int compareTo(Textbeitrag tb){
+		return tb.getDatum().compareTo(getDatum());
 	}
 	
 	

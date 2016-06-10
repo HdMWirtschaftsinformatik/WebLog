@@ -5,10 +5,12 @@ import java.util.Vector;
 
 public class Blogeintrag extends Textbeitrag {
 
-	Vector<Kommentar> kommentare = new Vector<Kommentar>();
+	private Vector<Kommentar> kommentare = new Vector<Kommentar>();
 
-	public String titel;
-	public String untertitel;
+	private String titel;
+	private String untertitel;
+	
+	
 
 	public Blogeintrag(String inhalt) {
 		super(inhalt);
@@ -55,7 +57,7 @@ public class Blogeintrag extends Textbeitrag {
 	}
 
 	public String toString() {
-		return autor.toString() + ": " + titel + " (" + untertitel + ") " + ": " + inhalt;
+		return getAutor().toString() + ": " + titel + " (" + untertitel + ") " + ": " + getInhalt();
 	}
 
 }

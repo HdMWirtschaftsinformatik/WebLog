@@ -3,10 +3,10 @@ package de.hdm.weblog;
 
 public class Person {
 	
-	int id;
-	String name;
-	String vorname;
-	String email;
+	private int id;
+	private String name;
+	private String vorname;
+	private String email;
 	
 	
 	public Person(String name, String vorname, String email){

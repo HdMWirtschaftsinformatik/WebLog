@@ -2,7 +2,7 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
   <display-name>Weblog</display-name>
   <welcome-file-list>
-    <welcome-file>Weblog.html</welcome-file>
+    <welcome-file>newBlogeintrag.html</welcome-file>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
     <welcome-file>index.jsp</welcome-file>
@@ -12,14 +12,5 @@
   </welcome-file-list>
   
   
-	<servlet>
-		<servlet-name>EntryCreation</servlet-name>
-		<servlet-class>de.hdm.weblog.servlet.EntryCreation</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>EntryCreation</servlet-name>
-		<url-pattern>/createEntry</url-pattern>
-	</servlet-mapping>
 	
 </web-app>
