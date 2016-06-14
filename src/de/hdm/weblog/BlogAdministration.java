@@ -102,7 +102,7 @@ public class BlogAdministration {
 
 	public void deleteBlogeintrag(Blogeintrag be) {
 		for (Kommentar kom : be.getKommentare()) {
-			deleteKommentar(kom);
+			kMapper.delete(kom);
 		}
 		bMapper.delete(be);
 	}

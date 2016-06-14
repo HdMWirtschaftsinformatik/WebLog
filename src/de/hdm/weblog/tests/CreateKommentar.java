@@ -3,7 +3,6 @@ import java.util.Vector;
 
 import de.hdm.weblog.BlogAdministration;
 import de.hdm.weblog.Blogeintrag;
-import de.hdm.weblog.Person;
 
 
 

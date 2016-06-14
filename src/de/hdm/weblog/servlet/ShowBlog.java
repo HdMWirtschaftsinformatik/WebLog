@@ -15,15 +15,6 @@ import de.hdm.weblog.Blogeintrag;
 import de.hdm.weblog.Kommentar;
 import de.hdm.weblog.Person;
 
-/**
- * Demonstrator f�r die Interaktion mit dem <code>BankServer</code>.
- * <p>
- * <b>Anwendungsfall:</b> Erstellen eines Reports.
- * 
- * @see de.hdm.bankProject.BankServer
- * 
- * @author Thies, Rathke
- */
 @WebServlet("/ShowBlog")
 public class ShowBlog extends HttpServlet {
 
