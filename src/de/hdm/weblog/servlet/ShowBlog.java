@@ -50,7 +50,17 @@ public class ShowBlog extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		String docType = "<!doctype html public \"-//w3c//dtd html 4.0 " + "transitional//en\">\n";
 		out.println(docType);
-		out.println("<html><body>");
+		out.println("<html>");
+		out.println("<head>");
+		//Bootstrap min.css CDN
+		out.println("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">");
+		//Bootstrap min.js CDN
+		out.println("<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\" integrity=\"sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa\" crossorigin=\"anonymous\"></script>");
+		out.println("</head>");
+		
+		
+		
+		out.println("<body>");
 
 		for (Blogeintrag be : blogs) {
 			out.println("<h2>" + be.getTitel() + "</h2>\n" + "<h3>" + be.getUntertitel() + "</h3>\n" + be.getInhalt());
