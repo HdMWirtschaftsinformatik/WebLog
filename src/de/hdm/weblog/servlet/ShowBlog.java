@@ -57,11 +57,27 @@ public class ShowBlog extends HttpServlet {
 		//Bootstrap min.js CDN
 		out.println("<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\" integrity=\"sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa\" crossorigin=\"anonymous\"></script>");
 		out.println("</head>");
-		
-		
-		
 		out.println("<body>");
+		out.println("<div class=\"container-fluid\"><br><br>");
+		out.println("<div class=\"row\">");
+		out.println("<div class=\"col-md-12\">");
+		out.println("<ul class=\"nav nav-pills\">");
+		out.println("<li class=\"active\">"+
+                 "<a href=\"#\">Home</a>"+
+                "</li>"+
+               "<li>"+
+                    "<a href=\"#\">New</a>"+
+                "</li>"+
+               "<li>"+
+                   "<a href=\"#\">About</a>"+
+                "</li>"+
 
+                "<a class=\"navbar-brand navbar-right\" href=\"http://disputebills.com\"><img src=\"http://www2.pic-upload.de/img/30253146/Logo_Graustufen_1.gif\" alt=\"Dispute Bills\">"+
+                "</a>"+
+
+                "<br><br>");
+		
+		
 		for (Blogeintrag be : blogs) {
 			out.println("<h2>" + be.getTitel() + "</h2>\n" + "<h3>" + be.getUntertitel() + "</h3>\n" + be.getInhalt());
 			out.println("von " + be.getAutor());
@@ -77,7 +93,13 @@ public class ShowBlog extends HttpServlet {
 			out.println("</ul>");
 			out.println("---------------------------------\n\n");
 		}
-
+		
+		//End of md-12
+		out.println("</div>");
+		//End of Row
+		out.println("</div>");
+		//End of Container
+		out.println("</div>");
 		out.println("</body>");
 		out.println("</html>");
 
