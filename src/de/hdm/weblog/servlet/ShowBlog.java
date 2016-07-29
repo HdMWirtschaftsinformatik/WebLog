@@ -60,14 +60,18 @@ public class ShowBlog extends HttpServlet {
 		out.println("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">");
 		//Bootstrap min.js CDN
 		out.println("<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\" integrity=\"sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa\" crossorigin=\"anonymous\"></script>");
+		//CSS
+		out.println("<link rel=\"stylesheet\" href=\"/IT2Weblog/css/style.css\" type=\"text/css\">");
+		
+		
 		out.println("</head>");
 		out.println("<body>");
 		out.println("<div class=\"container-fluid\"><br><br>");
 		out.println("<div class=\"row\">");
-		out.println("<div class=\"col-md-12\">");
+		out.println("<div class=\"col-md-6\">");
 		out.println("<ul class=\"nav nav-pills\">");
 		out.println("<li class=\"active\">"+
-                 "<a href=\"#\">Home</a>"+
+                 "<a href=\"ShowBlog\">Home</a>"+
                 "</li>"+
                "<li>"+
                     "<a href=\"NewBlogEntry\">New</a>"+
@@ -81,6 +85,18 @@ public class ShowBlog extends HttpServlet {
 
                 "<br><br>");
 		
+		out.println("</ul>");
+		//End of md-12
+		out.println("</div>");
+		//End of Row
+		out.println("</div>");
+		
+		
+		
+		
+		
+		out.println("<div class=\"row\">");
+		out.println("<div class=\"col-md-6\">");
 		
 		
 		out.println("<div class=\"page-header\">"+
@@ -105,12 +121,14 @@ public class ShowBlog extends HttpServlet {
 			for (Kommentar kom : be.getKommentare()) {
 				out.println("<ul><li>" + kom.getInhalt() + "</li></ul>");
 			}
-			out.println(be.getId());
 			out.println("<form action=\"NewComment\" method=\"post\">");
 			out.println("<input type=\"hidden\" name=\"id\" value=\"" + be.getId() + "\">");
-			out.println("<button type=\"submit\" name=\"NewComment\" class=\"btn btn-default\">Kommentar</button>");
+			out.println("<button type=\"submit\" name=\"NewComment\" class=\"btn btn-primary\">kommentieren</button>");
 			out.println("</form>");
+			out.println("<br>");
+			out.println("<hr>");
 		}
+		
 		
 		//End of md-12
 		out.println("</div>");

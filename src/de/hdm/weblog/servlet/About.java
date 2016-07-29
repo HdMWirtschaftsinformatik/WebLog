@@ -49,21 +49,25 @@ public class About extends HttpServlet {
 		out.println("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">");
 		//Bootstrap min.js CDN
 		out.println("<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\" integrity=\"sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa\" crossorigin=\"anonymous\"></script>");
+		
+		//CSS
+		out.println("<link rel=\"stylesheet\" href=\"/IT2Weblog/css/style.css\" type=\"text/css\">");
 		out.println("</head>");
 		out.println("<body>");
+		
 	
 		out.println("<div class=\"container-fluid\"><br><br>");
 		out.println("<div class=\"row\">");
 		out.println("<div class=\"col-md-6\">");
 		
 		out.println("<ul class=\"nav nav-pills\">");
-		out.println("<li class=\"active\">"+
+		out.println("<li>"+
                  "<a href=\"#\">Home</a>"+
                 "</li>"+
                "<li>"+
                     "<a href=\"NewBlogEntry\">New</a>"+
                 "</li>"+
-               "<li>"+
+               "<li class=\"active\">"+
                    "<a href=\"About\">About</a>"+
                 "</li>"+
 
@@ -71,6 +75,17 @@ public class About extends HttpServlet {
                 "</a>"+
 
                 "<br><br>");
+		
+		out.println("</ul>");
+		//End of md-12
+		out.println("</div>");
+		//End of Row
+		out.println("</div>");
+		
+		
+		out.println("<div class=\"row\">");
+		out.println("<div class=\"col-md-6\">");
+		
 		
 		out.println("<div class=\"page-header\">"+
                 "<h1>meinBlog <small>About</small></h1>"+
