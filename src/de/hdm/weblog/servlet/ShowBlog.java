@@ -31,6 +31,7 @@ public class ShowBlog extends HttpServlet {
 
 		Person person = null;
 		BlogAdministration adm = new BlogAdministration();
+		System.out.println(request.getParameter("newComment"));
 		if (request.getParameter("newEntry") != null) {
 
 			person = adm.createPerson(request.getParameter("name"), request.getParameter("vorname"),
@@ -42,6 +43,9 @@ public class ShowBlog extends HttpServlet {
 					request.getParameter("email"));
 			Blogeintrag be = adm.findBlogeintragById(Integer.parseInt(request.getParameter("id")));
 			adm.createKommentar(request.getParameter("text"), person, be);
+			
+
+			
 		}
 
 		Vector<Blogeintrag> blogs = adm.findAllLatestFirst();
@@ -72,7 +76,7 @@ public class ShowBlog extends HttpServlet {
                    "<a href=\"About\">About</a>"+
                 "</li>"+
 
-                "<a class=\"navbar-brand navbar-right\" href=\"http://disputebills.com\"><img src=\"http://www2.pic-upload.de/img/30253146/Logo_Graustufen_1.gif\" alt=\"Dispute Bills\">"+
+                "<a class=\"navbar-brand navbar-right\" href=\"http://hdm-stuttgart.de\"><img src=\"http://www2.pic-upload.de/img/30253146/Logo_Graustufen_1.gif\" alt=\"Dispute Bills\">"+
                 "</a>"+
 
                 "<br><br>");

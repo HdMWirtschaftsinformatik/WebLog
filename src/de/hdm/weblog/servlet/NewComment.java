@@ -95,29 +95,30 @@ public class NewComment extends HttpServlet {
 				
 				 out.println("<div class=\"form-group\">"+
 						    "<label for=\"text\">Kommentar</label>"+
-						    "<textarea type=\"text\" class=\"form-control\" id=\"inhalt\"></textarea>"+
+						    "<textarea name=\"text\" type=\"text\" class=\"form-control\" id=\"text\"></textarea>"+
 						  "</div>");
 				 
 				 
 				 out.println("<h3>Autor</h3>");
 				 
 				 out.println("<div class=\"form-group\">"+
-						    "<label for=\"text\">Vorname</label>"+
-						    "<input type=\"text\" class=\"form-control\" id=\"vorname\">"+
+						    "<label for=\"text\">vorname</label>"+
+						    "<input name=\"vorname\" type=\"text\" class=\"form-control\" id=\"vorname\">"+
+						  "</div>");
+				
+				 
+				 out.println("<div class=\"form-group\">"+
+						    "<label for=\"text\">name</label>"+
+						    "<input name=\"name\" type=\"text\" class=\"form-control\" id=\"name\">"+
 						  "</div>");
 				 
 				 out.println("<div class=\"form-group\">"+
-						    "<label for=\"text\">Nachname</label>"+
-						    "<input type=\"text\" class=\"form-control\" id=\"nachname\">"+
-						  "</div>");
-				 
-				 out.println("<div class=\"form-group\">"+
-						    "<label for=\"email\">Email</label>"+
-						    "<input type=\"email\" class=\"form-control\" id=\"email\">"+
+						    "<label for=\"email\">email</label>"+
+						    "<input name=\"email\" type=\"email\" class=\"form-control\" id=\"email\">"+
 						  "</div>");
 
 				 
-				out.println("<button type=\"submit\" name=\"NewComment\" class=\"btn btn-default\">Erstellen</button>");
+				out.println("<input type=\"Submit\" name=\"newComment\" value=\"Speichern\">");
 				out.println("</form>");
 		
 		

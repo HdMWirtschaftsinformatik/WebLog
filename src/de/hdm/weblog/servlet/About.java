@@ -17,16 +17,17 @@ import de.hdm.weblog.Kommentar;
 /**
  * Servlet implementation class CreateBlogeintrag
  */
-@WebServlet("/NewBlogEntry")
-public class NewBlogEntry extends HttpServlet {
+@WebServlet("/About")
+public class About extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
 
+	Date datum;
 
-	public NewBlogEntry() {
+	public About() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -54,64 +55,40 @@ public class NewBlogEntry extends HttpServlet {
 		out.println("<div class=\"container-fluid\"><br><br>");
 		out.println("<div class=\"row\">");
 		out.println("<div class=\"col-md-6\">");
-		out.println("<a href=\"ShowBlog\" class=\"btn btn-primary\">Zurück</a>");
+		
+		out.println("<ul class=\"nav nav-pills\">");
+		out.println("<li class=\"active\">"+
+                 "<a href=\"#\">Home</a>"+
+                "</li>"+
+               "<li>"+
+                    "<a href=\"NewBlogEntry\">New</a>"+
+                "</li>"+
+               "<li>"+
+                   "<a href=\"About\">About</a>"+
+                "</li>"+
+
+                "<a class=\"navbar-brand navbar-right\" href=\"http://hdm-stuttgart.de\"><img src=\"http://www2.pic-upload.de/img/30253146/Logo_Graustufen_1.gif\" alt=\"Dispute Bills\">"+
+                "</a>"+
+
+                "<br><br>");
 		
 		out.println("<div class=\"page-header\">"+
-                "<h1>meinBlog <small>neuen Eintrag erstellen</small></h1>"+
+                "<h1>meinBlog <small>About</small></h1>"+
             "</div>");
 		
-
-		out.println("<form action=\"ShowBlog\" method=\"post\">");
 		
-		out.println("<h3>Eintrag</h3>");
-		
-		 out.println("<div class=\"form-group\">"+
-		    "<label for=\"email\">Titel</label>"+
-		    "<input name=\"titel\" type=\"email\" class=\"form-control\" id=\"titel\">"+
-		  "</div>");
-		 
-		 out.println("<div class=\"form-group\">"+
-				    "<label for=\"text\">Untertitel</label>"+
-				    "<input name=\"untertitel\" type=\"text\" class=\"form-control\" id=\"untertitel\">"+
-				  "</div>");
-		 
-		 out.println("<div class=\"form-group\">"+
-				    "<label for=\"text\">Inhalt</label>"+
-				    "<textarea name=\"text\" type=\"text\" class=\"form-control\" id=\"inhalt\"></textarea>"+
-				  "</div>");
-		 
-		 out.println("<h3>Autor</h3>");
-		 
-		 out.println("<div class=\"form-group\">"+
-				    "<label for=\"text\">Vorname</label>"+
-				    "<input name=\"vorname\" type=\"text\" class=\"form-control\" id=\"vorname\">"+
-				  "</div>");
-		 
-		 out.println("<div class=\"form-group\">"+
-				    "<label for=\"text\">Nachname</label>"+
-				    "<input name=\"name\" type=\"text\" class=\"form-control\" id=\"nachname\">"+
-				  "</div>");
-		 
-		 out.println("<div class=\"form-group\">"+
-				    "<label for=\"email\">Email</label>"+
-				    "<input name=\"email\" type=\"email\" class=\"form-control\" id=\"email\">"+
-				  "</div>");
-
-		 
-		out.println("<input type=\"Submit\" name=\"newEntry\" value=\"Speichern\">");
-		out.println("</form>");
-		
+		out.println("<p>Github: <a href=\"https://github.com/ft027/Software_Werkzeuge\">klick</a></p>");
 		
 
 		
 		//End of md-12
-				out.println("</div>");
-				//End of Row
-				out.println("</div>");
-				//End of Container
-				out.println("</div>");
-				out.println("</body>");
-				out.println("</html>");
+		out.println("</div>");
+		//End of Row
+		out.println("</div>");
+		//End of Container
+		out.println("</div>");
+		out.println("</body>");
+		out.println("</html>");
 
 		out.close();
 
