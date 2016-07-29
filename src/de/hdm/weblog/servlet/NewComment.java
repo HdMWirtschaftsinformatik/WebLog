@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import de.hdm.weblog.BlogAdministration;
 import de.hdm.weblog.Blogeintrag;
+import de.hdm.weblog.Kommentar;
 
 /**
  * Servlet implementation class CreateBlogeintrag
@@ -42,51 +43,94 @@ public class NewComment extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		String docType = "<!doctype html public \"-//w3c//dtd html 4.0 " + "transitional//en\">\n";
 		out.println(docType);
-		out.println("<html><body>");
+		out.println("<html>");
+		out.println("<head>");
+		//Bootstrap min.css CDN
+		out.println("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">");
+		//Bootstrap min.js CDN
+		out.println("<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\" integrity=\"sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa\" crossorigin=\"anonymous\"></script>");
+		out.println("</head>");
+		out.println("<body>");
+	
+		out.println("<div class=\"container-fluid\"><br><br>");
+		out.println("<div class=\"row\">");
+		out.println("<div class=\"col-md-6\">");
+		out.println("<a href=\"ShowBlog\" class=\"btn btn-primary\">Zurück</a>");
+		
+		out.println("<div class=\"page-header\">"+
+                "<h1>meinBlog <small>kommentieren</small></h1>"+
+            "</div>");
+		
+		
+		
 
 		int id = 0;
 		if (request.getParameter("id") != null) {
 			id = Integer.parseInt(request.getParameter("id"));
 			BlogAdministration adm = new BlogAdministration();
 			Blogeintrag be = adm.findBlogeintragById(id);
-			out.println("<h2>" + be.getTitel() + "</h2>\n" + "<h3>" + be.getUntertitel() + "</h3>\n" + be.getInhalt());
-			out.println("von " + be.getAutor());
-		}
+			
+			//Titel
+			out.println("<h3>" + be.getTitel());
+			//Subtitle
+			out.println("<small>" + be.getUntertitel() + "</small></h3>");
+			//Content
+			out.println("<p>"+be.getInhalt()+"</p>");
+			//Author
+			out.println("<p>von " + be.getAutor()+"</p>");
 
-		out.println("<h2>Kommentar anlegen</h2>"
-				+ "<form action=\"ShowBlog\" method=\"post\">"
-				+ "<input type=\"hidden\" name=\"id\" value=\"" + id + "\">"
-				+ "<table>"
-				+ "<tr>"
-				+ "<td><b>Kommentar</b></td>"
-				+ "</tr>"
-				+ "<tr>"
-				+ "<td><label>Text:</label></td>"
-				+ "<td><textarea id=\"text\" name=\"text\" cols=\"35\" rows=\"4\"></textarea></td>"
-				+ "</tr>"
-				+ "<tr>"
-				+ "<td><b>Autor</b></td>"
-				+ "</tr>"
-				+ "<tr>"
-				+ "<td><label>Name:</label></td>"
-				+ "<td><input type=\"text\" name=\"name\" size=\"30\" maxlength=\"30\"></td>"
-				+ "</tr>"
-				+ "<tr>"
-				+ "<td><label>Vorname:</label></td>"
-				+ "<td><input type=\"text\" name=\"vorname\" size=\"30\" maxlength=\"30\"></td>"
-				+ "</tr>"
-				+ "<tr>"
-				+ "<td><label>Email:</label></td>"
-				+ "<td><input type=\"text\" name=\"email\" size=\"30\" maxlength=\"30\"></td>"
-				+ "</tr>"
-				+ "<tr>"
-				+ "<td></td>"
-				+ "<td><input type=\"Submit\" name=\"newComment\" value=\"Speichern\"></td>"
-				+ "</tr>"
-				+ "</table>"
-				+ "</form>");
+			for (Kommentar kom : be.getKommentare()) {
+				out.println("<ul><li>" + kom.getInhalt() + "</li></ul>");
+			}
 		
-		out.println("</body></html>");
+				
+			
+		}
+		
+		out.println("<h3>Kommentar anlegen</h3>");	
+		
+				out.println("<form action=\"ShowBlog\" method=\"post\">");
+				out.println("<input type=\"hidden\" name=\"id\" value=\"" + id + "\">");
+
+				
+				 out.println("<div class=\"form-group\">"+
+						    "<label for=\"text\">Kommentar</label>"+
+						    "<textarea type=\"text\" class=\"form-control\" id=\"inhalt\"></textarea>"+
+						  "</div>");
+				 
+				 
+				 out.println("<h3>Autor</h3>");
+				 
+				 out.println("<div class=\"form-group\">"+
+						    "<label for=\"text\">Vorname</label>"+
+						    "<input type=\"text\" class=\"form-control\" id=\"vorname\">"+
+						  "</div>");
+				 
+				 out.println("<div class=\"form-group\">"+
+						    "<label for=\"text\">Nachname</label>"+
+						    "<input type=\"text\" class=\"form-control\" id=\"nachname\">"+
+						  "</div>");
+				 
+				 out.println("<div class=\"form-group\">"+
+						    "<label for=\"email\">Email</label>"+
+						    "<input type=\"email\" class=\"form-control\" id=\"email\">"+
+						  "</div>");
+
+				 
+				out.println("<button type=\"submit\" name=\"NewComment\" class=\"btn btn-default\">Erstellen</button>");
+				out.println("</form>");
+		
+		
+
+		
+		//End of md-12
+		out.println("</div>");
+		//End of Row
+		out.println("</div>");
+		//End of Container
+		out.println("</div>");
+		out.println("</body>");
+		out.println("</html>");
 
 		out.close();
 

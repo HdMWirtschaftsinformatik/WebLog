@@ -66,10 +66,10 @@ public class ShowBlog extends HttpServlet {
                  "<a href=\"#\">Home</a>"+
                 "</li>"+
                "<li>"+
-                    "<a href=\"#\">New</a>"+
+                    "<a href=\"NewBlogEntry\">New</a>"+
                 "</li>"+
                "<li>"+
-                   "<a href=\"#\">About</a>"+
+                   "<a href=\"About\">About</a>"+
                 "</li>"+
 
                 "<a class=\"navbar-brand navbar-right\" href=\"http://disputebills.com\"><img src=\"http://www2.pic-upload.de/img/30253146/Logo_Graustufen_1.gif\" alt=\"Dispute Bills\">"+
@@ -78,20 +78,34 @@ public class ShowBlog extends HttpServlet {
                 "<br><br>");
 		
 		
+		
+		out.println("<div class=\"page-header\">"+
+                "<h1>meinBlog <small>ein WI-Projekt</small></h1>"+
+            "</div>");
+		
+		
+		
+		
+		
 		for (Blogeintrag be : blogs) {
-			out.println("<h2>" + be.getTitel() + "</h2>\n" + "<h3>" + be.getUntertitel() + "</h3>\n" + be.getInhalt());
-			out.println("von " + be.getAutor());
+			
+			//Titel
+			out.println("<h3>" + be.getTitel());
+			//Subtitle
+			out.println("<small>" + be.getUntertitel() + "</small></h3>");
+			//Content
+			out.println("<p>"+be.getInhalt()+"</p>");
+			//Author
+			out.println("<p>von " + be.getAutor()+"</p>");
 
-			out.println("<ul>");
 			for (Kommentar kom : be.getKommentare()) {
-				out.println("<li>" + kom.getInhalt() + "</li>");
+				out.println("<ul><li>" + kom.getInhalt() + "</li></ul>");
 			}
+			out.println(be.getId());
 			out.println("<form action=\"NewComment\" method=\"post\">");
 			out.println("<input type=\"hidden\" name=\"id\" value=\"" + be.getId() + "\">");
-			out.println("<input type=\"Submit\" name=\"NewComment\" value=\"Kommentieren\">");
+			out.println("<button type=\"submit\" name=\"NewComment\" class=\"btn btn-default\">Kommentar</button>");
 			out.println("</form>");
-			out.println("</ul>");
-			out.println("---------------------------------\n\n");
 		}
 		
 		//End of md-12
