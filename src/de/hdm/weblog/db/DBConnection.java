@@ -16,8 +16,8 @@ public class DBConnection {
 	 * Der Name des Datenbank-Servers in form eines Hostnames.
 	 */
 	private static String dbHost = 
-			"db4free.net";
-			//"localhost";
+			//"db4free.net";
+			"localhost";
 	/**
 	 * Der Name der Datenbank. Diese Datenbank wird entweder in Derby mit Hilfe von
 	 * Dateien im Dateisystem realisiert. Dann ist der Name der Datenbank ist gleichzeit
@@ -30,7 +30,6 @@ public class DBConnection {
 	 */
 	private static String connectionUrl = 
 			"jdbc:mysql://" + dbHost + "/" + dbName + "?user=weblogdemo&password=weblogdemo";
-			//"jdbc:derby:" + dbName + ";create=true";
 
 	/**
 	 * 

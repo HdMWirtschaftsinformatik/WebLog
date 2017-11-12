@@ -3,18 +3,18 @@ package de.hdm.weblog;
 import java.util.Date;
 import java.util.Vector;
 
-import de.hdm.weblog.db.BlogMapper;
+import de.hdm.weblog.db.BlogeintragMapper;
 import de.hdm.weblog.db.KommentarMapper;
 import de.hdm.weblog.db.PersonMapper;
 
 public class BlogAdministration {
 
-	private BlogMapper bMapper = null;
+	private BlogeintragMapper bMapper = null;
 	private PersonMapper pMapper = null;
 	private KommentarMapper kMapper = null;
 
 	public BlogAdministration() {
-		this.bMapper = BlogMapper.blogMapper();
+		this.bMapper = BlogeintragMapper.blogeintragMapper();
 		this.pMapper = PersonMapper.personMapper();
 		this.kMapper = KommentarMapper.kommentarMapper();
 		
@@ -47,8 +47,8 @@ public class BlogAdministration {
 			return pers; 
 		}
 		
-		pers = new Person(name, vorname, email);
-		pMapper.add(pers);
+		pers = new Person(name, vorname, email);		
+		pMapper.insert(pers);
 		
 		return pers;
 
@@ -65,15 +65,17 @@ public class BlogAdministration {
 	public Kommentar createKommentar(String inhalt, Person autor, Blogeintrag be) {
 
 		Kommentar kommentar = new Kommentar(inhalt);
-		kommentar.setBeitrag(be);
 		kommentar.setAutor(autor);
 		kommentar.setDatum(new Date());
+		
+		kommentar.setBlogeintrag(be);
 		be.addKommentar(kommentar);
-
-		kMapper.add(kommentar);
+		
+		kMapper.insert(kommentar);
 
 		return kommentar;
 	}
+	
 	
 	public Kommentar createKommentar(String inhalt, Blogeintrag be) {
 		return createKommentar(inhalt, findPersonByEmail("blogger"), be);
@@ -90,7 +92,7 @@ public class BlogAdministration {
 
 		Blogeintrag blogeintr = new Blogeintrag(inhalt, autor, new Date(), titel, utitel);
 
-		bMapper.add(blogeintr);
+		bMapper.insert(blogeintr);
 		
 		return blogeintr;
 
@@ -108,7 +110,7 @@ public class BlogAdministration {
 	}
 	
 	public void deleteKommentar(Kommentar kom) {
-		kom.getBeitrag().removeKommentar(kom);
+		kom.getBlockeintrag().removeKommentar(kom);
 		kMapper.delete(kom);
 	}
 

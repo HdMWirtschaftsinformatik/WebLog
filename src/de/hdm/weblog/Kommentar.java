@@ -2,20 +2,20 @@ package de.hdm.weblog;
 
 
 
-
 public class Kommentar extends Textbeitrag {
 	
-	Blogeintrag beitrag;
+	Blogeintrag be;
 	
 	public Kommentar(String inhalt) {
 		super(inhalt);
 	}
 	
-	public Blogeintrag getBeitrag() {
-		return beitrag;		
+	public Blogeintrag getBlockeintrag() {
+		return be;
 	}
-	public void setBeitrag(Blogeintrag b){
-		beitrag = b;
+	
+	public void setBlogeintrag(Blogeintrag b) {
+		be = b;
 	}
 
 	public String toString() {

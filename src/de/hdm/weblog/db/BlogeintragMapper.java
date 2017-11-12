@@ -1,6 +1,7 @@
 package de.hdm.weblog.db;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -8,18 +9,18 @@ import java.util.Vector;
 
 import de.hdm.weblog.Blogeintrag;
 
-public class BlogMapper {
+public class BlogeintragMapper {
 
-	private static BlogMapper blogMapper = null;
+	private static BlogeintragMapper blogeintragMapper = null;
 
-	public BlogMapper() {
+	protected BlogeintragMapper() {
 	}
 
-	public static BlogMapper blogMapper() {
-		if (blogMapper == null) {
-			blogMapper = new BlogMapper();
+	public static BlogeintragMapper blogeintragMapper() {
+		if (blogeintragMapper == null) {
+			blogeintragMapper = new BlogeintragMapper();
 		}
-		return blogMapper;
+		return blogeintragMapper;
 	}
 
 	public Vector<Blogeintrag> findAll() {
@@ -44,7 +45,6 @@ public class BlogMapper {
 				result.addElement(be);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -71,15 +71,14 @@ public class BlogMapper {
 				be.setAutor(PersonMapper.personMapper().findById(rs.getInt("textbeitrag.autor")));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return be;
 	}
 
-	public int add(Blogeintrag blogeintrag) {
+	public int insert(Blogeintrag blogeintrag) {
 
-		int id = TextbeitragMapper.textbeitragMapper().add(blogeintrag);
+		int id = TextbeitragMapper.textbeitragMapper().insert(blogeintrag);
 		if (id == 0) {
 			return 0;
 		} else {
@@ -88,13 +87,12 @@ public class BlogMapper {
 
 		Connection con = DBConnection.connection();
 		try {
-			Statement statement = con.createStatement();
-			statement.executeUpdate("INSERT INTO blogeintrag " + "(id, titel, untertitel) VALUES ("
-			+ id + ", "
-			+ "\"" + blogeintrag.getTitel() + "\", " 
-			+ "\"" + blogeintrag.getUntertitel() + "\")");
+			PreparedStatement statement = con.prepareStatement("INSERT INTO blogeintrag (id, titel, untertitel) VALUES (?, ?, ?)");
+			statement.setInt(1, id);
+			statement.setString(2, blogeintrag.getTitel());
+			statement.setString(3, blogeintrag.getUntertitel());
+			statement.executeUpdate();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -112,7 +110,6 @@ public class BlogMapper {
 			stmt = con.createStatement();
 			stmt.executeUpdate("DELETE FROM blogeintrag " + "WHERE id = " + blogeintrag.getId());
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

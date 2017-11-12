@@ -1,6 +1,7 @@
 package de.hdm.weblog.db;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,7 +13,7 @@ public class TextbeitragMapper {
 
 	private static TextbeitragMapper textbeitragMapper = null;
 
-	public TextbeitragMapper() {
+	protected TextbeitragMapper() {
 	}
 
 	public static TextbeitragMapper textbeitragMapper() {
@@ -22,25 +23,25 @@ public class TextbeitragMapper {
 		return textbeitragMapper;
 	}
 
-	public int add(Textbeitrag textbeitrag) {
-		SimpleDateFormat sdf = new SimpleDateFormat();
+	public int insert(Textbeitrag textbeitrag) {
 		Connection con = DBConnection.connection();
 
-		Statement statement;
+		PreparedStatement statement;
 		int id = 0;
 		try {
-			statement = con.createStatement();
-			String sqlString = "INSERT INTO textbeitrag " + "(datum, inhalt, autor) VALUES (" 
-					+ "\"" + sdf.format(textbeitrag.getDatum()) + "\", "
-					+ "\"" + textbeitrag.getInhalt() + "\","
-					+ textbeitrag.getAutor().getId() + ")";
-			statement.executeUpdate(sqlString, Statement.RETURN_GENERATED_KEYS);
+			String sqlString = "INSERT INTO textbeitrag (datum, inhalt, autor) VALUES (?, ?, ?)";
+			
+			statement = con.prepareStatement(sqlString, Statement.RETURN_GENERATED_KEYS);
+			statement.setDate(1, new java.sql.Date(textbeitrag.getDatum().getTime()));
+			statement.setString(2, textbeitrag.getInhalt());
+			statement.setInt(3, textbeitrag.getAutor().getId());
+			
+			statement.executeUpdate();
 			ResultSet rs = statement.getGeneratedKeys();
 			if (rs.next()) {
 				id = rs.getInt(1);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return id;
@@ -54,7 +55,6 @@ public class TextbeitragMapper {
 			stmt = con.createStatement();
 			stmt.executeUpdate("DELETE FROM textbeitrag " + "WHERE id = " + textbeitrag.getId());
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

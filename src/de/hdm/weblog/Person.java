@@ -1,5 +1,6 @@
 package de.hdm.weblog;
 
+import de.hdm.weblog.db.PersonMapper;
 
 public class Person {
 	
@@ -14,7 +15,6 @@ public class Person {
 		this.name = name;
 		this.vorname = vorname;
 		this.email = email;
-		
 		
 	};
 	

@@ -8,7 +8,7 @@ public class PersonMapper {
 
 	private static PersonMapper personMapper = null;
 
-	public PersonMapper() {
+	protected PersonMapper() {
 	}
 
 	public static PersonMapper personMapper() {
@@ -44,7 +44,7 @@ public class PersonMapper {
 		Statement stmt;
 		try {
 			stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM person " + "WHERE email = \"" + email + "\"");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM person " + "WHERE email = \'" + email + "\'");
 			if (rs.next()) {
 				person = new Person(rs.getString("nachname"), rs.getString("vorname"), rs.getString("email"));
 				person.setId(rs.getInt("id"));
@@ -56,13 +56,13 @@ public class PersonMapper {
 		return person;
 	}
 
-	public int add(Person person) {
+	public int insert(Person person) {
 		Connection con = DBConnection.connection();
 
 		// Person erstellen
 		int id = 0;
-		String insertTableSQL = "INSERT INTO person (nachname, vorname, email) VALUES " + "(" + "\"" + person.getName()
-				+ "\", " + "\"" + person.getVorname() + "\", " + "\"" + person.getEmail() + "\")";
+		String insertTableSQL = "INSERT INTO person (nachname, vorname, email) VALUES " + "(" + "\'" + person.getName()
+				+ "\', " + "\'" + person.getVorname() + "\', " + "\'" + person.getEmail() + "\')";
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate(insertTableSQL, Statement.RETURN_GENERATED_KEYS);
