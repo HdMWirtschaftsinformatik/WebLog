@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import de.hdm.weblog.BlogAdministration;
 import de.hdm.weblog.Blogeintrag;
-import de.hdm.weblog.Kommentar;
+import de.hdm.weblog.Blogeintrag.Kommentar;
 
 /**
  * Servlet implementation class CreateBlogeintrag

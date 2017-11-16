@@ -3,15 +3,29 @@ package de.hdm.weblog;
 import java.util.Date;
 import java.util.Vector;
 
-import de.hdm.weblog.db.BlogeintragMapper;
-import de.hdm.weblog.db.KommentarMapper;
-
 public class Blogeintrag extends Textbeitrag {
 
 	private Vector<Kommentar> kommentare = new Vector<Kommentar>();
 
 	private String titel;
 	private String untertitel;
+	
+	
+	public class Kommentar extends Textbeitrag {
+		
+		public Kommentar(String inhalt) {
+			super(inhalt);
+		}
+		
+		public Blogeintrag getBlockeintrag() {
+			return Blogeintrag.this;
+		}
+
+		public String toString() {
+			return getAutor().toString() + ": "  + getInhalt(); 
+		}
+
+	}
 	
 	
 
@@ -25,6 +39,14 @@ public class Blogeintrag extends Textbeitrag {
 		this.untertitel = utitel;
 		setAutor(autor);
 		setDatum(datum);
+	}
+	
+	public Kommentar createKommentar(String inhalt, Person autor, Date datum) {
+		Kommentar kom = new Kommentar(inhalt);
+		kom.setAutor(autor);
+		kom.setDatum(datum);
+		kommentare.add(kom);
+		return kom;
 	}
 
 

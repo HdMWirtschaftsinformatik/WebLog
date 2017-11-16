@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import de.hdm.weblog.BlogAdministration;
 import de.hdm.weblog.Blogeintrag;
-import de.hdm.weblog.Kommentar;
+import de.hdm.weblog.Blogeintrag.Kommentar;
 import de.hdm.weblog.Person;
 
 @WebServlet("/ShowBlog")
@@ -62,9 +62,8 @@ public class ShowBlog extends HttpServlet {
 		out.println("<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\" integrity=\"sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa\" crossorigin=\"anonymous\"></script>");
 		//CSS
 		out.println("<link rel=\"stylesheet\" href=\"/IT2Weblog/css/style.css\" type=\"text/css\">");
-		
-		
 		out.println("</head>");
+		
 		out.println("<body>");
 		out.println("<div class=\"container-fluid\"><br><br>");
 		out.println("<div class=\"row\">");

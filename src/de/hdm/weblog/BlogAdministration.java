@@ -17,25 +17,22 @@ public class BlogAdministration {
 		this.bMapper = BlogeintragMapper.blogeintragMapper();
 		this.pMapper = PersonMapper.personMapper();
 		this.kMapper = KommentarMapper.kommentarMapper();
-		
+
 		createPerson("Blogger", "Jonny", "blogger");
 
 	}
 
 	public Vector<Blogeintrag> findAll() {
 		Vector<Blogeintrag> blogs = bMapper.findAll();
-		for (Blogeintrag be : blogs) {
-			be.setKommentare(kMapper.findAllForBlogeintrag(be));
-		}
 		return blogs;
 	}
-	
+
 	public Vector<Blogeintrag> findAllLatestFirst() {
 		Vector<Blogeintrag> blogs = findAll();
 		blogs.sort(null);
 		return blogs;
 	}
-	
+
 	public Blogeintrag findBlogeintragById(int id) {
 		return bMapper.findById(id);
 	}
@@ -44,45 +41,33 @@ public class BlogAdministration {
 
 		Person pers = pMapper.findByEmail(email);
 		if (pers != null) {
-			return pers; 
+			return pers;
 		}
-		
-		pers = new Person(name, vorname, email);		
+
+		pers = new Person(name, vorname, email);
 		pMapper.insert(pers);
-		
+
 		return pers;
 
 	}
-	
+
 	public Person findPersonByEmail(String email) {
 		return pMapper.findByEmail(email);
 	}
-	
+
 	public Person findPersonById(int id) {
 		return pMapper.findById(id);
 	}
 
-	public Kommentar createKommentar(String inhalt, Person autor, Blogeintrag be) {
+	public Blogeintrag.Kommentar createKommentar(String inhalt, Person autor, Blogeintrag be) {
+		Blogeintrag.Kommentar kom = be.createKommentar(inhalt, autor, new Date());
+		kMapper.insert(kom);
 
-		Kommentar kommentar = new Kommentar(inhalt);
-		kommentar.setAutor(autor);
-		kommentar.setDatum(new Date());
-		
-		kommentar.setBlogeintrag(be);
-		be.addKommentar(kommentar);
-		
-		kMapper.insert(kommentar);
-
-		return kommentar;
+		return kom;
 	}
-	
-	
-	public Kommentar createKommentar(String inhalt, Blogeintrag be) {
+
+	public Blogeintrag.Kommentar createKommentar(String inhalt, Blogeintrag be) {
 		return createKommentar(inhalt, findPersonByEmail("blogger"), be);
-	}
-	
-	public Kommentar findKommentarById(int id) {
-		return kMapper.findById(id);
 	}
 
 	public Blogeintrag createBlogeintrag(String inhalt, Person autor, String titel, String utitel) {
@@ -93,23 +78,24 @@ public class BlogAdministration {
 		Blogeintrag blogeintr = new Blogeintrag(inhalt, autor, new Date(), titel, utitel);
 
 		bMapper.insert(blogeintr);
-		
+
 		return blogeintr;
 
 	}
-	
+
 	public Blogeintrag createBlogeintrag(String inhalt, String titel, String utitel) {
 		return createBlogeintrag(inhalt, findPersonByEmail("blogger"), titel, utitel);
 	}
 
 	public void deleteBlogeintrag(Blogeintrag be) {
-		for (Kommentar kom : be.getKommentare()) {
+		for (Blogeintrag.Kommentar kom : (Vector<Blogeintrag.Kommentar>) be.getKommentare().clone()) {
+			be.removeKommentar(kom);
 			kMapper.delete(kom);
 		}
 		bMapper.delete(be);
 	}
-	
-	public void deleteKommentar(Kommentar kom) {
+
+	public void deleteKommentar(Blogeintrag.Kommentar kom) {
 		kom.getBlockeintrag().removeKommentar(kom);
 		kMapper.delete(kom);
 	}

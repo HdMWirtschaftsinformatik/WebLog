@@ -1,7 +1,5 @@
 package de.hdm.weblog;
 
-import de.hdm.weblog.db.PersonMapper;
-
 public class Person {
 	
 	private int id;

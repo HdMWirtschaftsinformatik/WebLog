@@ -10,10 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import de.hdm.weblog.BlogAdministration;
-import de.hdm.weblog.Blogeintrag;
-import de.hdm.weblog.Kommentar;
-
 /**
  * Servlet implementation class CreateBlogeintrag
  */

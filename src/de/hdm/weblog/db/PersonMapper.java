@@ -31,7 +31,6 @@ public class PersonMapper {
 				person.setId(rs.getInt("id"));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return person;
@@ -50,35 +49,29 @@ public class PersonMapper {
 				person.setId(rs.getInt("id"));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return person;
 	}
 
-	public int insert(Person person) {
+	public void insert(Person person) {
 		Connection con = DBConnection.connection();
 
-		// Person erstellen
-		int id = 0;
-		String insertTableSQL = "INSERT INTO person (nachname, vorname, email) VALUES " + "(" + "\'" + person.getName()
-				+ "\', " + "\'" + person.getVorname() + "\', " + "\'" + person.getEmail() + "\')";
 		try {
-			Statement stmt = con.createStatement();
-			stmt.executeUpdate(insertTableSQL, Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement stmt = con.prepareStatement(
+					"INSERT INTO person (nachname, vorname, email) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, person.getName());
+			stmt.setString(2, person.getVorname());
+			stmt.setString(3, person.getEmail());
+			stmt.executeUpdate();
 
 			ResultSet key = stmt.getGeneratedKeys();
 			if (key.next()) {
-				id = key.getInt(1);
-				person.setId(id);
+				person.setId(key.getInt(1));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		return id;
-
 	}
 
 	public void delete(int id) {
@@ -90,10 +83,13 @@ public class PersonMapper {
 			stmt = con.createStatement();
 			stmt.executeUpdate("DELETE FROM person " + "WHERE id = " + id);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
+	}
+	
+	public void delete(Person person) {
+		delete(person.getId());
 	}
 
 }

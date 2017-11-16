@@ -30,7 +30,7 @@ public class BlogeintragMapper {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("select * from textbeitrag, blogeintrag "
-					+ "where textbeitrag.id = blogeintrag.id " + "ORDER BY blogeintrag.id");
+					+ "where textbeitrag.id = blogeintrag.id " + "ORDER BY textbeitrag.datum");
 
 			while (rs.next()) {
 				Blogeintrag be = new Blogeintrag(rs.getString("textbeitrag.inhalt"));
@@ -41,6 +41,7 @@ public class BlogeintragMapper {
 				be.setTitel(rs.getString("blogeintrag.titel"));
 				be.setUntertitel(rs.getString("blogeintrag.untertitel"));
 				be.setAutor(PersonMapper.personMapper().findById(rs.getInt("textbeitrag.autor")));
+				KommentarMapper.kommentarMapper().findAllForBlogeintrag(be);
 
 				result.addElement(be);
 			}
@@ -69,6 +70,7 @@ public class BlogeintragMapper {
 				be.setTitel(rs.getString("blogeintrag.titel"));
 				be.setUntertitel(rs.getString("blogeintrag.untertitel"));
 				be.setAutor(PersonMapper.personMapper().findById(rs.getInt("textbeitrag.autor")));
+				KommentarMapper.kommentarMapper().findAllForBlogeintrag(be);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -76,39 +78,33 @@ public class BlogeintragMapper {
 		return be;
 	}
 
-	public int insert(Blogeintrag blogeintrag) {
+	public void insert(Blogeintrag blogeintrag) {
 
-		int id = TextbeitragMapper.textbeitragMapper().insert(blogeintrag);
-		if (id == 0) {
-			return 0;
-		} else {
-			blogeintrag.setId(id);
-		}
+		TextbeitragMapper.textbeitragMapper().insert(blogeintrag);
 
 		Connection con = DBConnection.connection();
 		try {
-			PreparedStatement statement = con.prepareStatement("INSERT INTO blogeintrag (id, titel, untertitel) VALUES (?, ?, ?)");
-			statement.setInt(1, id);
+			PreparedStatement statement = con
+					.prepareStatement("INSERT INTO blogeintrag (id, titel, untertitel) VALUES (?, ?, ?)");
+			statement.setInt(1, blogeintrag.getId());
 			statement.setString(2, blogeintrag.getTitel());
 			statement.setString(3, blogeintrag.getUntertitel());
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		return id;
-
+	}
+	
+	public void delete(Blogeintrag blogeintrag) {
+		delete(blogeintrag.getId());
 	}
 
-	public void delete(Blogeintrag blogeintrag) {
-
-		TextbeitragMapper.textbeitragMapper().delete(blogeintrag);
-
+	public void delete(int id) {
+		TextbeitragMapper.textbeitragMapper().delete(id);
 		Connection con = DBConnection.connection();
-		Statement stmt;
 		try {
-			stmt = con.createStatement();
-			stmt.executeUpdate("DELETE FROM blogeintrag " + "WHERE id = " + blogeintrag.getId());
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate("DELETE FROM blogeintrag " + "WHERE id = " + id);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
