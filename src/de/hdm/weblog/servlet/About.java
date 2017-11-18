@@ -37,69 +37,20 @@ public class About extends HttpServlet {
 
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
-		String docType = "<!doctype html public \"-//w3c//dtd html 4.0 " + "transitional//en\">\n";
-		out.println(docType);
-		out.println("<html>");
-		out.println("<head>");
-		//Bootstrap min.css CDN
-		out.println("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">");
-		//Bootstrap min.js CDN
-		out.println("<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\" integrity=\"sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa\" crossorigin=\"anonymous\"></script>");
 		
-		//CSS
-		out.println("<link rel=\"stylesheet\" href=\"/IT2Weblog/css/style.css\" type=\"text/css\">");
-		out.println("</head>");
-		out.println("<body>");
+		String html = String.format("<!doctype html>%n" + "<html>%n" + "<head>%n" + "</head>%n%n" + "<body>%n"
+				+ "<a style=\"border: 1px solid black; background-color: yellow; padding: 2px;\" href=\"ShowBlog\">Home</a> <a href=\"NewBlogEntry\">New</a> <a href=\"About\">About</a>%n"
+				+ "<a href=\"http://hdm-stuttgart.de\">"
+				+ "   <img style=\"float: right;\"  src=\"https://www.hdm-stuttgart.de/stylesheets_bilder/logo_web.png\" alt=\"HdM Logo\">"
+				+ "</a>%n%n<br><br>");
+		out.println(html);	
 		
-	
-		out.println("<div class=\"container-fluid\"><br><br>");
-		out.println("<div class=\"row\">");
-		out.println("<div class=\"col-md-6\">");
-		
-		out.println("<ul class=\"nav nav-pills\">");
-		out.println("<li>"+
-                 "<a href=\"#\">Home</a>"+
-                "</li>"+
-               "<li>"+
-                    "<a href=\"NewBlogEntry\">New</a>"+
-                "</li>"+
-               "<li class=\"active\">"+
-                   "<a href=\"About\">About</a>"+
-                "</li>"+
-
-                "<a class=\"navbar-brand navbar-right\" href=\"http://hdm-stuttgart.de\"><img src=\"http://www2.pic-upload.de/img/30253146/Logo_Graustufen_1.gif\" alt=\"Dispute Bills\">"+
-                "</a>"+
-
-                "<br><br>");
-		
-		out.println("</ul>");
-		//End of md-12
-		out.println("</div>");
-		//End of Row
-		out.println("</div>");
-		
-		
-		out.println("<div class=\"row\">");
-		out.println("<div class=\"col-md-6\">");
-		
-		
-		out.println("<div class=\"page-header\">"+
-                "<h1>meinBlog <small>About</small></h1>"+
-            "</div>");
-		
-		
-		out.println("<p>Github: <a href=\"https://github.com/ft027/Software_Werkzeuge\">klick</a></p>");
-		
-
-		
-		//End of md-12
-		out.println("</div>");
-		//End of Row
-		out.println("</div>");
-		//End of Container
-		out.println("</div>");
-		out.println("</body>");
-		out.println("</html>");
+		html = String.format(
+                "<h1>meinBlog <br/><small>About</small></h1>"
+                + "<p><a href=\"https://github.com/HdMWirtschaftsinformatik/WebLog\">Github</a></p>"
+                + "</body>"
+                + "</html>");
+		out.println(html);
 
 		out.close();
 

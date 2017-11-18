@@ -41,55 +41,15 @@ public class NewComment extends HttpServlet {
 
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
-		String docType = "<!doctype html public \"-//w3c//dtd html 4.0 " + "transitional//en\">\n";
-		out.println(docType);
-		out.println("<html>");
-		out.println("<head>");
-		//Bootstrap min.css CDN
-		out.println("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" integrity=\"sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u\" crossorigin=\"anonymous\">");
-		//Bootstrap min.js CDN
-		out.println("<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\" integrity=\"sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa\" crossorigin=\"anonymous\"></script>");
-		//CSS
-		out.println("<link rel=\"stylesheet\" href=\"/IT2Weblog/css/style.css\" type=\"text/css\">");
-		
-		
-		out.println("</head>");
-		out.println("<body>");
 	
-		out.println("<div class=\"container-fluid\"><br><br>");
-		
-		out.println("<div class=\"row\">");
-		out.println("<div class=\"col-md-6\">");
-		out.println("<ul class=\"nav nav-pills\">");
-		out.println("<li>"+
-                 "<a href=\"ShowBlog\">Home</a>"+
-                "</li>"+
-               "<li>"+
-                    "<a href=\"NewBlogEntry\">New</a>"+
-                "</li>"+
-               "<li>"+
-                   "<a href=\"About\">About</a>"+
-                "</li>"+
+		String html = String.format("<!doctype html>%n" + "<html>%n" + "<head>%n" + "</head>%n%n" + "<body>%n"
+				+ "<a style=\"border: 1px solid black; background-color: yellow; padding: 2px;\" href=\"ShowBlog\">Home</a> <a href=\"NewBlogEntry\">New</a> <a href=\"About\">About</a>%n"
+				+ "<a href=\"http://hdm-stuttgart.de\">"
+				+ "   <img style=\"float: right;\"  src=\"https://www.hdm-stuttgart.de/stylesheets_bilder/logo_web.png\" alt=\"HdM Logo\">"
+				+ "</a>%n%n<br><br>");
+		out.println(html);
 
-                "<a class=\"navbar-brand navbar-right\" href=\"http://hdm-stuttgart.de\"><img src=\"http://www2.pic-upload.de/img/30253146/Logo_Graustufen_1.gif\" alt=\"Dispute Bills\">"+
-                "</a>"+
-
-                "<br><br>");
-		
-				out.println("</ul>");
-				//End of md-12
-				out.println("</div>");
-				//End of Row
-				out.println("</div>");
-		
-		
-		out.println("<div class=\"row\">");
-		out.println("<div class=\"col-md-6\">");
-		//out.println("<a href=\"ShowBlog\" class=\"btn btn-primary\">Zurück</a>");
-		
-		out.println("<div class=\"page-header\">"+
-                "<h1>meinBlog <small>kommentieren</small></h1>"+
-            "</div>");
+		out.println("<h1>meinBlog <br/> <small>kommentieren</small></h1>");
 		
 		
 		
@@ -100,67 +60,33 @@ public class NewComment extends HttpServlet {
 			BlogAdministration adm = new BlogAdministration();
 			Blogeintrag be = adm.findBlogeintragById(id);
 			
-			//Titel
-			out.println("<h3>" + be.getTitel());
-			//Subtitle
-			out.println("<small>" + be.getUntertitel() + "</small></h3>");
-			//Content
-			out.println("<p>"+be.getInhalt()+"</p>");
-			//Author
-			out.println("<p>von " + be.getAutor()+"</p>");
+			html = String.format("<h3> %s <br>%n <small style=\"margin-left: 1em;\"> %s </small></h3>%n"
+					+ "<p>von %s%n</p>" + "<p>%n%s%n</p>%n", be.getTitel(), be.getUntertitel(), be.getAutor(),
+					be.getInhalt());
+			out.println(html);
 
 			for (Kommentar kom : be.getKommentare()) {
 				out.println("<ul><li>" + kom.getInhalt() + "</li></ul>");
 			}
-			out.println("<br>");
 			out.println("<hr>");	
-		
 			
 		}
 		
-		out.println("<h3>Kommentar anlegen</h3>");	
-		
-				out.println("<form action=\"ShowBlog\" method=\"post\">");
-				out.println("<input type=\"hidden\" name=\"id\" value=\"" + id + "\">");
+		html = String.format(
+				"<h3>Kommentar anlegen</h3>"
+				+ "<form action=\"ShowBlog\" method=\"post\">"
+				+ "  <input type=\"hidden\" name=\"id\" value=\"" + id + "\">"
+				+ "    <textarea name=\"text\" type=\"text\" id=\"text\" required cols=\"60\" rows=\"6\"></textarea>"
+				+ "  <fieldset>"
+				+ "    <legend>Autor</legend>"
+				+ "    <label for=\"text\">Vorname</label> <input name=\"vorname\" type=\"text\" id=\"vorname\" required/> <br/>"
+				+ "    <label for=\"text\">Name</label> <input name=\"name\" type=\"text\" id=\"name\" required/> <br/>"
+				+ "    <label for=\"email\">Email</label> <input name=\"email\" type=\"email\" id=\"email\" required/>"
+				+ "  </fieldset> <br/> <br/>"
+				+ "    <input type=\"Submit\" name=\"newComment\" value=\"Speichern\"/>");
 
-				
-				 out.println("<div class=\"form-group\">"+
-						    "<label for=\"text\">Kommentar</label>"+
-						    "<textarea name=\"text\" type=\"text\" class=\"form-control\" id=\"text\"required></textarea>"+
-						  "</div>");
-				 
-				 
-				 out.println("<h3>Autor</h3>");
-				 
-				 out.println("<div class=\"form-group\">"+
-						    "<label for=\"text\">Vorname</label>"+
-						    "<input name=\"vorname\" type=\"text\" class=\"form-control\" id=\"vorname\"required>"+
-						  "</div>");
-				
-				 
-				 out.println("<div class=\"form-group\">"+
-						    "<label for=\"text\">Name</label>"+
-						    "<input name=\"name\" type=\"text\" class=\"form-control\" id=\"name\"required>"+
-						  "</div>");
-				 
-				 out.println("<div class=\"form-group\">"+
-						    "<label for=\"email\">Email</label>"+
-						    "<input name=\"email\" type=\"email\" class=\"form-control\" id=\"email\"required>"+
-						  "</div>");
-
-				 
-				out.println("<input type=\"Submit\" name=\"newComment\" value=\"Speichern\">");
-				out.println("</form>");
+		out.println(html);
 		
-		
-
-		
-		//End of md-12
-		out.println("</div>");
-		//End of Row
-		out.println("</div>");
-		//End of Container
-		out.println("</div>");
 		out.println("</body>");
 		out.println("</html>");
 
