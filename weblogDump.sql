@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `it2weblog` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */;
-USE `it2weblog`;
--- MySQL dump 10.13  Distrib 5.6.13, for Win32 (x86)
+-- MySQL dump 10.13  Distrib 5.7.12, for Win32 (AMD64)
 --
 -- Host: localhost    Database: it2weblog
 -- ------------------------------------------------------
--- Server version	5.6.14
+-- Server version	5.6.36
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -28,19 +26,11 @@ CREATE TABLE `blogeintrag` (
   `id` int(11) NOT NULL,
   `titel` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `untertitel` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `textbeitrag` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `blogeintrag`
---
-
-LOCK TABLES `blogeintrag` WRITE;
-/*!40000 ALTER TABLE `blogeintrag` DISABLE KEYS */;
-/*!40000 ALTER TABLE `blogeintrag` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `kommentar`
@@ -52,21 +42,13 @@ DROP TABLE IF EXISTS `kommentar`;
 CREATE TABLE `kommentar` (
   `id` int(11) NOT NULL,
   `blogeintrag` int(11) DEFAULT NULL,
+  `textbeitrag` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `blogeintragid_idx` (`blogeintrag`),
   CONSTRAINT `blogeintragid` FOREIGN KEY (`blogeintrag`) REFERENCES `blogeintrag` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `kommentar`
---
-
-LOCK TABLES `kommentar` WRITE;
-/*!40000 ALTER TABLE `kommentar` DISABLE KEYS */;
-/*!40000 ALTER TABLE `kommentar` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `person`
@@ -82,18 +64,8 @@ CREATE TABLE `person` (
   `email` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `person`
---
-
-LOCK TABLES `person` WRITE;
-/*!40000 ALTER TABLE `person` DISABLE KEYS */;
-INSERT INTO `person` VALUES (1,'Jonny','Blogger','blogger');
-/*!40000 ALTER TABLE `person` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `textbeitrag`
@@ -111,17 +83,8 @@ CREATE TABLE `textbeitrag` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `autor_idx` (`autor`),
   CONSTRAINT `autorid` FOREIGN KEY (`autor`) REFERENCES `person` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `textbeitrag`
---
-
-LOCK TABLES `textbeitrag` WRITE;
-/*!40000 ALTER TABLE `textbeitrag` DISABLE KEYS */;
-/*!40000 ALTER TABLE `textbeitrag` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -132,4 +95,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-06-06 17:27:49
+-- Dump completed on 2017-11-24 15:05:52

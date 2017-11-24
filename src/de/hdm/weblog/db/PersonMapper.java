@@ -6,19 +6,7 @@ import de.hdm.weblog.Person;
 
 public class PersonMapper {
 
-	private static PersonMapper personMapper = null;
-
-	protected PersonMapper() {
-	}
-
-	public static PersonMapper personMapper() {
-		if (personMapper == null) {
-			personMapper = new PersonMapper();
-		}
-		return personMapper;
-	}
-
-	public Person findById(int id) {
+	public static Person findById(int id) {
 		Connection con = DBConnection.connection();
 
 		Person person = null;
@@ -36,7 +24,7 @@ public class PersonMapper {
 		return person;
 	}
 
-	public Person findByEmail(String email) {
+	public static Person findByEmail(String email) {
 		Connection con = DBConnection.connection();
 
 		Person person = null;
@@ -54,7 +42,7 @@ public class PersonMapper {
 		return person;
 	}
 
-	public void insert(Person person) {
+	public static void insert(Person person) {
 		Connection con = DBConnection.connection();
 
 		try {
@@ -74,7 +62,7 @@ public class PersonMapper {
 		}
 	}
 
-	public void delete(int id) {
+	public static void delete(int id) {
 
 		Connection con = DBConnection.connection();
 
@@ -88,8 +76,38 @@ public class PersonMapper {
 
 	}
 	
-	public void delete(Person person) {
+	public static void delete(Person person) {
 		delete(person.getId());
+	}
+	
+	public static void removeTable() {
+		Connection con = DBConnection.connection();
+		Statement stmt;
+		try {
+			stmt = con.createStatement();
+			stmt.executeUpdate("DROP TABLE person");
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	public static void createTable() {
+		String sqlString = "CREATE TABLE person (\n" + 
+				"  id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),\n" + 
+				"  vorname varchar(45) DEFAULT NULL,\n" + 
+				"  nachname varchar(45) DEFAULT NULL,\n" + 
+				"  email varchar(45) DEFAULT NULL,\n" + 
+				"  PRIMARY KEY (id)\n" +  
+				" )";
+		Connection con = DBConnection.connection();
+		Statement stmt;
+		try {
+			stmt = con.createStatement();
+			stmt.executeUpdate(sqlString);
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+
 	}
 
 }

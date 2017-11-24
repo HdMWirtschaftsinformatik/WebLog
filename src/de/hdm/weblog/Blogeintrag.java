@@ -18,7 +18,7 @@ public class Blogeintrag extends Textbeitrag {
 		}
 		
 		public Blogeintrag getBlockeintrag() {
-			return Blogeintrag.this;
+			return getThisBlogeintrag();
 		}
 
 		public String toString() {
@@ -47,6 +47,10 @@ public class Blogeintrag extends Textbeitrag {
 		kom.setDatum(datum);
 		kommentare.add(kom);
 		return kom;
+	}
+	
+	private Blogeintrag getThisBlogeintrag() {
+		return this;
 	}
 
 

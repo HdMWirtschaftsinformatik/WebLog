@@ -10,19 +10,7 @@ import de.hdm.weblog.Textbeitrag;
 
 public class TextbeitragMapper {
 
-	private static TextbeitragMapper textbeitragMapper = null;
-
-	protected TextbeitragMapper() {
-	}
-
-	public static TextbeitragMapper textbeitragMapper() {
-		if (textbeitragMapper == null) {
-			textbeitragMapper = new TextbeitragMapper();
-		}
-		return textbeitragMapper;
-	}
-
-	public void insert(Textbeitrag textbeitrag) {
+	public static void insert(Textbeitrag textbeitrag) {
 		Connection con = DBConnection.connection();
 
 		try {
@@ -42,11 +30,11 @@ public class TextbeitragMapper {
 		}
 	}
 
-	public void delete(Textbeitrag textbeitrag) {
+	public static void delete(Textbeitrag textbeitrag) {
 		delete(textbeitrag.getId());
 	}
 	
-	public void delete(int id) {
+	public static void delete(int id) {
 
 		Connection con = DBConnection.connection();
 		try {
@@ -54,6 +42,38 @@ public class TextbeitragMapper {
 			stmt.executeUpdate("DELETE FROM textbeitrag " + "WHERE id = " + id);
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+
+	}
+	
+	
+	public static void removeTable() {
+		Connection con = DBConnection.connection();
+		Statement stmt;
+		try {
+			stmt = con.createStatement();
+			stmt.executeUpdate("DROP TABLE textbeitrag");
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	public static void createTable() {
+		String sqlString = "CREATE TABLE textbeitrag (\n" + 
+				"  id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),\n" + 
+				"  inhalt LONG VARCHAR,\n" + 
+				"  datum date DEFAULT NULL,\n" + 
+				"  autor int DEFAULT NULL,\n" + 
+				"  PRIMARY KEY (id),\n" + 
+				"  CONSTRAINT autorid FOREIGN KEY (autor) REFERENCES person (id) ON DELETE NO ACTION ON UPDATE NO ACTION\n" + 
+				" )";
+		Connection con = DBConnection.connection();
+		Statement stmt;
+		try {
+			stmt = con.createStatement();
+			stmt.executeUpdate(sqlString);
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
 		}
 
 	}

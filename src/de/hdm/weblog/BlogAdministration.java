@@ -9,21 +9,14 @@ import de.hdm.weblog.db.PersonMapper;
 
 public class BlogAdministration {
 
-	private BlogeintragMapper bMapper = null;
-	private PersonMapper pMapper = null;
-	private KommentarMapper kMapper = null;
-
 	public BlogAdministration() {
-		this.bMapper = BlogeintragMapper.blogeintragMapper();
-		this.pMapper = PersonMapper.personMapper();
-		this.kMapper = KommentarMapper.kommentarMapper();
 
 		createPerson("Blogger", "Jonny", "blogger");
 
 	}
 
 	public Vector<Blogeintrag> findAll() {
-		Vector<Blogeintrag> blogs = bMapper.findAll();
+		Vector<Blogeintrag> blogs = BlogeintragMapper.findAll();
 		return blogs;
 	}
 
@@ -34,34 +27,34 @@ public class BlogAdministration {
 	}
 
 	public Blogeintrag findBlogeintragById(int id) {
-		return bMapper.findById(id);
+		return BlogeintragMapper.findById(id);
 	}
 
 	public Person createPerson(String name, String vorname, String email) {
 
-		Person pers = pMapper.findByEmail(email);
+		Person pers = PersonMapper.findByEmail(email);
 		if (pers != null) {
 			return pers;
 		}
 
 		pers = new Person(name, vorname, email);
-		pMapper.insert(pers);
+		PersonMapper.insert(pers);
 
 		return pers;
 
 	}
 
 	public Person findPersonByEmail(String email) {
-		return pMapper.findByEmail(email);
+		return PersonMapper.findByEmail(email);
 	}
 
 	public Person findPersonById(int id) {
-		return pMapper.findById(id);
+		return PersonMapper.findById(id);
 	}
 
 	public Blogeintrag.Kommentar createKommentar(String inhalt, Person autor, Blogeintrag be) {
 		Blogeintrag.Kommentar kom = be.createKommentar(inhalt, autor, new Date());
-		kMapper.insert(kom);
+		KommentarMapper.insert(kom);
 
 		return kom;
 	}
@@ -77,7 +70,7 @@ public class BlogAdministration {
 
 		Blogeintrag blogeintr = new Blogeintrag(inhalt, autor, new Date(), titel, utitel);
 
-		bMapper.insert(blogeintr);
+		BlogeintragMapper.insert(blogeintr);
 
 		return blogeintr;
 
@@ -90,14 +83,14 @@ public class BlogAdministration {
 	public void deleteBlogeintrag(Blogeintrag be) {
 		for (Blogeintrag.Kommentar kom : (Vector<Blogeintrag.Kommentar>) be.getKommentare().clone()) {
 			be.removeKommentar(kom);
-			kMapper.delete(kom);
+			KommentarMapper.delete(kom);
 		}
-		bMapper.delete(be);
+		BlogeintragMapper.delete(be);
 	}
 
 	public void deleteKommentar(Blogeintrag.Kommentar kom) {
 		kom.getBlockeintrag().removeKommentar(kom);
-		kMapper.delete(kom);
+		KommentarMapper.delete(kom);
 	}
 
 }

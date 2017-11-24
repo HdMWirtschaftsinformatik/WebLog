@@ -18,18 +18,21 @@ public class DBConnection {
 	private static String dbHost = 
 			//"db4free.net";
 			"localhost";
+			//"edu.hdm-server.eu:1433";
 	/**
 	 * Der Name der Datenbank. Diese Datenbank wird entweder in Derby mit Hilfe von
-	 * Dateien im Dateisystem realisiert. Dann ist der Name der Datenbank ist gleichzeit
+	 * Dateien im Dateisystem realisiert. Dann ist der Name der Datenbank gleichzeit
 	 * der Name des Verzeichnisses, in dem sich die Datenbankdateien befinden. Alternativ
-	 * kann die Datenbank als MySQL-Datenbank realisiert werden.
+	 * kann die Datenbank als MySQL- oder SQLServer-Datenbank realisiert werden.
 	 */
 	private static String dbName = "it2weblog";
 	/**
 	 * Die URL, mit deren Hilfe die Datenbank angesprochen wird.
 	 */
 	private static String connectionUrl = 
-			"jdbc:mysql://" + dbHost + "/" + dbName + "?user=weblogdemo&password=weblogdemo";
+			//"jdbc:mysql://" + dbHost + "/" + dbName + "?user=weblogdemo&password=weblogdemo";
+			"jdbc:derby:" + dbName + ";create=true";
+			//"jdbc:sqlserver://" + dbHost + ";user=weblogdemo;password=weblogdemo";
 
 	/**
 	 * 
@@ -40,6 +43,9 @@ public class DBConnection {
 		// Wenn es bisher keine Conncetion zur DB gab, ...
 		if (con == null) {
 			try {
+				/*
+				 * Manchmal (?) wird der DB-Treiber nicht automatisch instanziiert. Hiermit wird dies erzwungen.
+				 */
 				Class.forName("com.mysql.jdbc.Driver").newInstance();
 				/*
 				 * Der DriverManager nimmt eine Verbindung mit den

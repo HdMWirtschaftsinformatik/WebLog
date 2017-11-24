@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Fri Nov 24 16:19:45 CET 2017:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.2 - (1629631): instance a816c00e-015f-ee9c-f997-000006cd0bf0 
+on database directory C:\Users\Christian\git\WebLog\it2weblog with class loader sun.misc.Launcher$AppClassLoader@2a139a55 
+Loaded from file:/C:/Users/Christian/git/WebLog/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_72-b15
+user.dir=C:\Users\Christian\git\WebLog
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

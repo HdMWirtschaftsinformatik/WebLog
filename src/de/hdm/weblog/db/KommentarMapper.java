@@ -9,19 +9,7 @@ import de.hdm.weblog.Blogeintrag;
 
 public class KommentarMapper {
 
-	private static KommentarMapper kommentarMapper = null;
-
-	protected KommentarMapper() {
-	}
-
-	public static KommentarMapper kommentarMapper() {
-		if (kommentarMapper == null) {
-			kommentarMapper = new KommentarMapper();
-		}
-		return kommentarMapper;
-	}
-
-	public void findAllForBlogeintrag(Blogeintrag be) {
+	public static void findAllForBlogeintrag(Blogeintrag be) {
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
@@ -29,19 +17,19 @@ public class KommentarMapper {
 					+ "where textbeitrag.id = kommentar.id and kommentar.blogeintrag = " + be.getId());
 
 			while (rs.next()) {
-				Blogeintrag.Kommentar kom = be.createKommentar(rs.getString("textbeitrag.inhalt"),
-						PersonMapper.personMapper().findById(rs.getInt("textbeitrag.autor")),
-						rs.getDate("textbeitrag.datum"));
-				kom.setId(rs.getInt("textbeitrag.id"));
+				Blogeintrag.Kommentar kom = be.createKommentar(rs.getString("inhalt"),
+						PersonMapper.findById(rs.getInt("autor")),
+						rs.getDate("datum"));
+				kom.setId(rs.getInt("id"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void insert(Blogeintrag.Kommentar kommentar) {
+	public static void insert(Blogeintrag.Kommentar kommentar) {
 
-		TextbeitragMapper.textbeitragMapper().insert(kommentar);
+		TextbeitragMapper.insert(kommentar);
 		Connection con = DBConnection.connection();
 		try {
 			Statement statement = con.createStatement();
@@ -53,12 +41,12 @@ public class KommentarMapper {
 
 	}
 
-	public void delete(Blogeintrag.Kommentar kommentar) {
+	public static void delete(Blogeintrag.Kommentar kommentar) {
 		delete(kommentar.getId());
 	}
 
-	public void delete(int id) {
-		TextbeitragMapper.textbeitragMapper().delete(id);
+	public static void delete(int id) {
+		TextbeitragMapper.delete(id);
 
 		Connection con = DBConnection.connection();
 		try {
@@ -66,6 +54,35 @@ public class KommentarMapper {
 			stmt.executeUpdate("DELETE FROM kommentar " + "WHERE id = " + id);
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+
+	}
+	
+	public static void removeTable() {
+		Connection con = DBConnection.connection();
+		Statement stmt;
+		try {
+			stmt = con.createStatement();
+			stmt.executeUpdate("DROP TABLE kommentar");
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	public static void createTable() {
+		String sqlString = "CREATE TABLE kommentar (\n" + 
+				"  id int NOT NULL,\n" + 
+				"  blogeintrag int DEFAULT NULL,\n" + 
+				"  PRIMARY KEY (id),\n" + 
+				"  CONSTRAINT blogeintragid FOREIGN KEY (blogeintrag) REFERENCES blogeintrag (id) ON DELETE NO ACTION ON UPDATE NO ACTION\n" + 
+				" )";
+		Connection con = DBConnection.connection();
+		Statement stmt;
+		try {
+			stmt = con.createStatement();
+			stmt.executeUpdate(sqlString);
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
 		}
 
 	}

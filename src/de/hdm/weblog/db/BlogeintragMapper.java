@@ -11,19 +11,7 @@ import de.hdm.weblog.Blogeintrag;
 
 public class BlogeintragMapper {
 
-	private static BlogeintragMapper blogeintragMapper = null;
-
-	protected BlogeintragMapper() {
-	}
-
-	public static BlogeintragMapper blogeintragMapper() {
-		if (blogeintragMapper == null) {
-			blogeintragMapper = new BlogeintragMapper();
-		}
-		return blogeintragMapper;
-	}
-
-	public Vector<Blogeintrag> findAll() {
+	public static Vector<Blogeintrag> findAll() {
 		Connection con = DBConnection.connection();
 		Vector<Blogeintrag> result = new Vector<Blogeintrag>();
 
@@ -33,15 +21,15 @@ public class BlogeintragMapper {
 					+ "where textbeitrag.id = blogeintrag.id " + "ORDER BY textbeitrag.datum");
 
 			while (rs.next()) {
-				Blogeintrag be = new Blogeintrag(rs.getString("textbeitrag.inhalt"));
+				Blogeintrag be = new Blogeintrag(rs.getString("inhalt"));
 
 				// Blogeintrag erstellen
-				be.setId(rs.getInt("textbeitrag.id"));
-				be.setDatum(rs.getDate("textbeitrag.datum"));
-				be.setTitel(rs.getString("blogeintrag.titel"));
-				be.setUntertitel(rs.getString("blogeintrag.untertitel"));
-				be.setAutor(PersonMapper.personMapper().findById(rs.getInt("textbeitrag.autor")));
-				KommentarMapper.kommentarMapper().findAllForBlogeintrag(be);
+				be.setId(rs.getInt("id"));
+				be.setDatum(rs.getDate("datum"));
+				be.setTitel(rs.getString("titel"));
+				be.setUntertitel(rs.getString("untertitel"));
+				be.setAutor(PersonMapper.findById(rs.getInt("autor")));
+				KommentarMapper.findAllForBlogeintrag(be);
 
 				result.addElement(be);
 			}
@@ -53,7 +41,7 @@ public class BlogeintragMapper {
 		return result;
 	}
 
-	public Blogeintrag findById(int id) {
+	public static Blogeintrag findById(int id) {
 		Connection con = DBConnection.connection();
 		Blogeintrag be = null;
 		try {
@@ -69,8 +57,8 @@ public class BlogeintragMapper {
 				be.setDatum(rs.getDate("textbeitrag.datum"));
 				be.setTitel(rs.getString("blogeintrag.titel"));
 				be.setUntertitel(rs.getString("blogeintrag.untertitel"));
-				be.setAutor(PersonMapper.personMapper().findById(rs.getInt("textbeitrag.autor")));
-				KommentarMapper.kommentarMapper().findAllForBlogeintrag(be);
+				be.setAutor(PersonMapper.findById(rs.getInt("textbeitrag.autor")));
+				KommentarMapper.findAllForBlogeintrag(be);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -78,9 +66,9 @@ public class BlogeintragMapper {
 		return be;
 	}
 
-	public void insert(Blogeintrag blogeintrag) {
+	public static void insert(Blogeintrag blogeintrag) {
 
-		TextbeitragMapper.textbeitragMapper().insert(blogeintrag);
+		TextbeitragMapper.insert(blogeintrag);
 
 		Connection con = DBConnection.connection();
 		try {
@@ -95,18 +83,49 @@ public class BlogeintragMapper {
 		}
 	}
 	
-	public void delete(Blogeintrag blogeintrag) {
+	public static void delete(Blogeintrag blogeintrag) {
 		delete(blogeintrag.getId());
 	}
 
-	public void delete(int id) {
-		TextbeitragMapper.textbeitragMapper().delete(id);
+	public static void delete(int id) {
+		TextbeitragMapper.delete(id);
 		Connection con = DBConnection.connection();
 		try {
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate("DELETE FROM blogeintrag " + "WHERE id = " + id);
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+
+	}
+	
+	
+	public static void removeTable() {
+		KommentarMapper.removeTable();
+		Connection con = DBConnection.connection();
+		Statement stmt;
+		try {
+			stmt = con.createStatement();
+			stmt.executeUpdate("DROP TABLE blogeintrag");
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	public static void createTable() {
+		String sqlString = "CREATE TABLE blogeintrag (\n" + 
+				"  id int NOT NULL,\n" + 
+				"  titel varchar(45) DEFAULT NULL,\n" + 
+				"  untertitel varchar(45) DEFAULT NULL,\n" + 
+				"  PRIMARY KEY (id)\n" + 
+				" )";
+		Connection con = DBConnection.connection();
+		Statement stmt;
+		try {
+			stmt = con.createStatement();
+			stmt.executeUpdate(sqlString);
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
 		}
 
 	}
