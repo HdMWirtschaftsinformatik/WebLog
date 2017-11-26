@@ -1,6 +1,7 @@
-.container-fluid{
-	
-	margin-left: 20px;
-	
-	
+/* Styles for weblog */
+
+a.blogActionButton {
+	border: 1px solid black;
+	background-color: #80ffff;
+	padding: 5px;
 }

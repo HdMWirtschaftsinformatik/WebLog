@@ -1,4 +1,5 @@
 package de.hdm.weblog.db;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -11,28 +12,26 @@ import java.sql.SQLException;
 public class DBConnection {
 
 	private static Connection con = null;
-	
-	/**
-	 * Der Name des Datenbank-Servers in form eines Hostnames.
-	 */
-	private static String dbHost = 
-			//"db4free.net";
-			"localhost";
-			//"edu.hdm-server.eu:1433";
-	/**
-	 * Der Name der Datenbank. Diese Datenbank wird entweder in Derby mit Hilfe von
-	 * Dateien im Dateisystem realisiert. Dann ist der Name der Datenbank gleichzeit
-	 * der Name des Verzeichnisses, in dem sich die Datenbankdateien befinden. Alternativ
-	 * kann die Datenbank als MySQL- oder SQLServer-Datenbank realisiert werden.
-	 */
-	private static String dbName = "it2weblog";
-	/**
-	 * Die URL, mit deren Hilfe die Datenbank angesprochen wird.
-	 */
-	private static String connectionUrl = 
-			//"jdbc:mysql://" + dbHost + "/" + dbName + "?user=weblogdemo&password=weblogdemo";
-			"jdbc:derby:" + dbName + ";create=true";
-			//"jdbc:sqlserver://" + dbHost + ";user=weblogdemo;password=weblogdemo";
+
+	private static String connectionType = "mySQL";
+	// "sqlServer";
+	// "javaDB";
+
+	private static String connectionUrl = "";
+
+	static {
+		switch (connectionType) {
+		case "mySQL":
+			connectionUrl = "jdbc:mysql://localhost/it2weblog?user=weblogdemo&password=weblogdemo";
+			break;
+		case "sqlServer":
+			connectionUrl = "jdbc:sqlserver://edu.hdm-server.eu;user=weblogdemo;password=weblogdemo";
+			break;
+		case "javaDB":
+			connectionUrl = "jdbc:derby:it2weblog;create=true";
+			break;
+		}
+	}
 
 	/**
 	 * 
@@ -44,27 +43,33 @@ public class DBConnection {
 		if (con == null) {
 			try {
 				/*
-				 * Manchmal (?) wird der DB-Treiber nicht automatisch instanziiert. Hiermit wird dies erzwungen.
+				 * Falls die Driver-Klasse nicht vor dieser Klasse geladen wird,
+				 * ist der entsprechende Treiber noch nicht registriert.
+				 * Hiermit wird das Laden erzwungen, was zur Registrierung einer
+				 * Instanz beim DriverManager führt.
 				 */
-				Class.forName("com.mysql.jdbc.Driver").newInstance();
+				switch (connectionType) {
+				case "mySQL":
+					Class.forName("com.mysql.jdbc.Driver");
+					break;
+				case "javaDB":
+					Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+					break;
+				case "sqlServer":
+					Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+					break;
+				}
 				/*
-				 * Der DriverManager nimmt eine Verbindung mit den
-				 * oben in der Variable url angegebenen Verbindungsinformationen
-				 * auf.
+				 * Der DriverManager nimmt eine Verbindung mit den oben in der Variable url
+				 * angegebenen Verbindungsinformationen auf.
 				 *
-				 * Diese Verbindung wird in der statischen Variable con
-				 * abgespeichert und fortan verwendet.
+				 * Diese Verbindung wird in der statischen Variable con abgespeichert und fortan
+				 * verwendet.
 				 */
 				con = DriverManager.getConnection(connectionUrl);
 			} catch (SQLException e1) {
 				con = null;
 				e1.printStackTrace();
-			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
