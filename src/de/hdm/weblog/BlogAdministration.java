@@ -51,6 +51,14 @@ public class BlogAdministration {
 	public Person findPersonById(int id) {
 		return PersonMapper.findById(id);
 	}
+	
+	public Vector<Person> findAllPersons() {
+		return PersonMapper.findAll();
+	}
+	
+	public void deletePerson(Person p) {
+		PersonMapper.delete(p);
+	}
 
 	public Blogeintrag.Kommentar createKommentar(String inhalt, Person autor, Blogeintrag be) {
 		Blogeintrag.Kommentar kom = be.createKommentar(inhalt, autor, new Date());

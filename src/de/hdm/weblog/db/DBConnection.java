@@ -17,22 +17,8 @@ public class DBConnection {
 	// "sqlServer";
 	// "javaDB";
 
-	private static String connectionUrl = "";
-
-	static {
-		switch (connectionType) {
-		case "mySQL":
-			connectionUrl = "jdbc:mysql://localhost/it2weblog?user=weblogdemo&password=weblogdemo";
-			break;
-		case "sqlServer":
-			connectionUrl = "jdbc:sqlserver://edu.hdm-server.eu;user=weblogdemo;password=weblogdemo";
-			break;
-		case "javaDB":
-			connectionUrl = "jdbc:derby:it2weblog;create=true";
-			break;
-		}
-	}
-
+	private static String connectionUrl = getConnectionUrl();
+	
 	/**
 	 * 
 	 * @return DAS <code>DBConncetion</code>-Objekt.
@@ -71,12 +57,23 @@ public class DBConnection {
 				con = null;
 				e1.printStackTrace();
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 
 		// Zurueckgegeben der Verbindung
 		return con;
+	}
+	
+	private static String getConnectionUrl() {
+		switch (connectionType) {
+		case "mySQL":
+			return "jdbc:mysql://localhost/it2weblog?user=weblogdemo&password=weblogdemo";
+		case "sqlServer":
+			return "jdbc:sqlserver://edu.hdm-server.eu;user=weblogdemo;password=weblogdemo";
+		case "javaDB":
+			return "jdbc:derby:it2weblog;create=true";
+		}
+		return "";
 	}
 }

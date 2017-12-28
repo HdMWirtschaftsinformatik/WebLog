@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import de.hdm.weblog.BlogAdministration;
 import de.hdm.weblog.Blogeintrag;
@@ -29,20 +30,37 @@ public class ShowBlog extends HttpServlet {
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		Person person = null;
-		BlogAdministration adm = new BlogAdministration();
-		if (request.getParameter("newEntry") != null) {
+		HttpSession session = request.getSession(true);
+		BlogAdministration adm = (BlogAdministration) session.getAttribute("BlogAdmin");
+		Person autor = (Person) session.getAttribute("Autor");
 
-			person = adm.createPerson(request.getParameter("name"), request.getParameter("vorname"),
-					request.getParameter("email"));
-			adm.createBlogeintrag(request.getParameter("text"), person, request.getParameter("titel"),
-					request.getParameter("untertitel"));
-		} else if (request.getParameter("newComment") != null) {
-			person = adm.createPerson(request.getParameter("name"), request.getParameter("vorname"),
-					request.getParameter("email"));
-			Blogeintrag be = adm.findBlogeintragById(Integer.parseInt(request.getParameter("id")));
-			adm.createKommentar(request.getParameter("text"), person, be);
+		if (adm == null) {
+			adm = new BlogAdministration();
+			session.setAttribute("BlogAdmin", adm);
+		}
 
+		if (request.getParameter("email") != null) {
+			autor = adm.findPersonByEmail((String) request.getAttribute("email"));
+			if (autor == null) {
+				autor = adm.createPerson(request.getParameter("name"), request.getParameter("vorname"),
+						request.getParameter("email"));
+			}
+			session.setAttribute("Autor", autor);
+		}
+
+		if (autor != null) {
+			if (request.getParameter("newEntry") != null) {
+				adm.createBlogeintrag(request.getParameter("text"), autor, request.getParameter("titel"),
+						request.getParameter("untertitel"));
+			} else if (request.getParameter("newComment") != null) {
+				Blogeintrag be = adm.findBlogeintragById(Integer.parseInt(request.getParameter("id")));
+				adm.createKommentar(request.getParameter("text"), autor, be);
+			} else if (request.getParameter("deleteBlogEntry") != null) {
+				Blogeintrag be = adm.findBlogeintragById(Integer.parseInt(request.getParameter("id")));
+				if (be.getAutor().equals(autor)) {
+					adm.deleteBlogeintrag(be);
+				}
+			}
 		}
 
 		Vector<Blogeintrag> blogs = adm.findAllLatestFirst();
@@ -54,8 +72,7 @@ public class ShowBlog extends HttpServlet {
 				+ "<link rel=stylesheet type=\"text/css\" href=\"css/style.css\">%n" + "</head>%n%n" + "<body>%n"
 				+ "<a class=\"blogActionButton\" href=\"ShowBlog\">Home</a> "
 				+ "<a class=\"blogActionButton\" href=\"NewBlogEntry\">New</a> "
-				+ "<a class=\"blogActionButton\" href=\"About\">About</a>%n"
-				+ "<a href=\"http://hdm-stuttgart.de\">"
+				+ "<a class=\"blogActionButton\" href=\"About\">About</a>%n" + "<a href=\"http://hdm-stuttgart.de\">"
 				+ "   <img style=\"float: right;\"  src=\"https://www.hdm-stuttgart.de/stylesheets_bilder/logo_web.png\" alt=\"HdM Logo\">"
 				+ "</a>%n%n<br><br>");
 		out.println(html);
@@ -73,12 +90,14 @@ public class ShowBlog extends HttpServlet {
 				out.println("<ul><li>" + kom.getInhalt() + "</li></ul>");
 			}
 
-			html = String.format("<form action=\"NewComment\" method=\"post\"> %n"
-					+ "<input type=\"hidden\" name=\"id\" value=\"" + be.getId() + "\"> %n"
-					+ "<button type=\"submit\" name=\"NewComment\">kommentieren</button> %n" + "</form><br><hr>");
+			html = String.format("<form action=\"BlogEntryAction\" method=\"post\"> %n"
+					+ "<input type=\"hidden\" name=\"id\" value=\"%s\"> %n"
+					+ "<button type=\"submit\" name=\"action\" value=\"NewComment\">kommentieren</button> %n"
+					+ "<button type=\"submit\" name=\"action\" value=\"DeleteBlogEntry\">löschen</button> %n<hr/>", be.getId());
 			out.println(html);
 		}
 
+		out.println("</form>");
 		out.println("</body>");
 		out.println("</html>");
 

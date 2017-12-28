@@ -1,6 +1,11 @@
 package de.hdm.weblog.db;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Vector;
 
 import de.hdm.weblog.Person;
 
@@ -40,6 +45,26 @@ public class PersonMapper {
 			e.printStackTrace();
 		}
 		return person;
+	}
+
+	public static Vector<Person> findAll() {
+		Connection con = DBConnection.connection();
+
+		Vector<Person> persons = new Vector<Person>();
+		Statement stmt;
+		try {
+			stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM person");
+			Person person;
+			while (rs.next()) {
+				person = new Person(rs.getString("nachname"), rs.getString("vorname"), rs.getString("email"));
+				person.setId(rs.getInt("id"));
+				persons.add(person);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return persons;
 	}
 
 	public static void insert(Person person) {
