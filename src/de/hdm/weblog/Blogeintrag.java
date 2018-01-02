@@ -5,6 +5,11 @@ import java.util.Vector;
 
 public class Blogeintrag extends Textbeitrag {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private Vector<Kommentar> kommentare = new Vector<Kommentar>();
 
 	private String titel;
@@ -13,8 +18,16 @@ public class Blogeintrag extends Textbeitrag {
 	
 	public class Kommentar extends Textbeitrag {
 		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		public Kommentar(String inhalt) {
 			super(inhalt);
+		}
+		
+		public Kommentar() {
 		}
 		
 		public Blogeintrag getBlockeintrag() {
@@ -32,6 +45,8 @@ public class Blogeintrag extends Textbeitrag {
 	public Blogeintrag(String inhalt) {
 		super(inhalt);
 	}
+	
+	public Blogeintrag() {}
 
 	public Blogeintrag(String inhalt, Person autor, Date datum, String titel, String utitel) {
 		this(inhalt);

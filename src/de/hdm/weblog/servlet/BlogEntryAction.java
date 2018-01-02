@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import de.hdm.weblog.BlogAdministration;
+import de.hdm.weblog.BlogAdministrationImpl;
 import de.hdm.weblog.Blogeintrag;
 import de.hdm.weblog.Person;
 import de.hdm.weblog.Blogeintrag.Kommentar;
@@ -56,9 +57,9 @@ public class BlogEntryAction extends HttpServlet {
 		out.println("<h1>meinBlog <br/></h1>");
 
 		int id = 0;
-		if (request.getParameter("id") != null) {
+		if (request.getParameter("action") != null) {
 			id = Integer.parseInt(request.getParameter("id"));
-			BlogAdministration adm = new BlogAdministration();
+			BlogAdministration adm = new BlogAdministrationImpl();
 			Blogeintrag be = adm.findBlogeintragById(id);
 
 			html = String.format("<h3> %s <br>%n <small style=\"margin-left: 1em;\"> %s </small></h3>%n"
@@ -82,7 +83,7 @@ public class BlogEntryAction extends HttpServlet {
 					+ "<button type=\"Submit\" name=\"newComment\" value=\"Speichern\">Speichern</button>  <br/> <br/>";
 		} else if (request.getParameter("action").equals("DeleteBlogEntry")) {
 			html = "<h3>Blogeintrag löschen</h3> <br/>"
-					+ "<button type=\"Submit\" name=\"deleteBlogEntry\" value=\"Löschen\">Löschen</button> <br/> <br/>"; 
+					+ "<button type=\"Submit\" name=\"deleteBlogEntry\" value=\"Loeschen\">Löschen</button> <br/> <br/>"; 
 		}
 		
 		out.println(html);

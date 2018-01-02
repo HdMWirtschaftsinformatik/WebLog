@@ -13,9 +13,10 @@ public class DBConnection {
 
 	private static Connection con = null;
 
-	private static String connectionType = "mySQL";
-	// "sqlServer";
-	// "javaDB";
+	private static String connectionType = 
+//			"mySQL";
+		 "sqlServer";
+//		 "javaDB";
 
 	private static String connectionUrl = getConnectionUrl();
 	

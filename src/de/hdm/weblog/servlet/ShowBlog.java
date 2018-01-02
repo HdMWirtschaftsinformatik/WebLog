@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import de.hdm.weblog.BlogAdministration;
+import de.hdm.weblog.BlogAdministrationImpl;
 import de.hdm.weblog.Blogeintrag;
 import de.hdm.weblog.Blogeintrag.Kommentar;
 import de.hdm.weblog.Person;
@@ -35,7 +36,7 @@ public class ShowBlog extends HttpServlet {
 		Person autor = (Person) session.getAttribute("Autor");
 
 		if (adm == null) {
-			adm = new BlogAdministration();
+			adm = new BlogAdministrationImpl();
 			session.setAttribute("BlogAdmin", adm);
 		}
 
@@ -57,7 +58,7 @@ public class ShowBlog extends HttpServlet {
 				adm.createKommentar(request.getParameter("text"), autor, be);
 			} else if (request.getParameter("deleteBlogEntry") != null) {
 				Blogeintrag be = adm.findBlogeintragById(Integer.parseInt(request.getParameter("id")));
-				if (be.getAutor().equals(autor)) {
+				if (be.getAutor().getId() == autor.getId()) {
 					adm.deleteBlogeintrag(be);
 				}
 			}
@@ -81,23 +82,22 @@ public class ShowBlog extends HttpServlet {
 
 		for (Blogeintrag be : blogs) {
 
-			html = String.format("<h3> %s <br>%n <small style=\"margin-left: 1em;\"> %s </small></h3>%n"
-					+ "<p>von %s%n</p>" + "<p>%n%s%n</p>%n", be.getTitel(), be.getUntertitel(), be.getAutor(),
-					be.getInhalt());
+			html = String.format("<form action=\"BlogEntryAction\" method=\"post\">%n"
+					+ "<h3><br>%n <small style=\"margin-left: 1em;\"> %s </small></h3>%n" + "<p>von %s%n</p>"
+					+ "<p>%n%s%n</p>%n", be.getTitel(), be.getUntertitel(), be.getAutor(), be.getInhalt());
 			out.println(html);
 
 			for (Kommentar kom : be.getKommentare()) {
 				out.println("<ul><li>" + kom.getInhalt() + "</li></ul>");
 			}
 
-			html = String.format("<form action=\"BlogEntryAction\" method=\"post\"> %n"
-					+ "<input type=\"hidden\" name=\"id\" value=\"%s\"> %n"
-					+ "<button type=\"submit\" name=\"action\" value=\"NewComment\">kommentieren</button> %n"
-					+ "<button type=\"submit\" name=\"action\" value=\"DeleteBlogEntry\">löschen</button> %n<hr/>", be.getId());
+			html = "<input type=\"hidden\" name=\"id\" value=\"" + be.getId() + "\"/>"
+					+ "<button type=\"submit\" name=\"action\" value=\"NewComment\">kommentieren</button> "
+					+ "<button type=\"submit\" name=\"action\" value=\"DeleteBlogEntry\">löschen</button>\n<hr/>\n"
+					+ "</form>";
 			out.println(html);
 		}
 
-		out.println("</form>");
 		out.println("</body>");
 		out.println("</html>");
 

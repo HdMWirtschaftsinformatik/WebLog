@@ -50,14 +50,14 @@ public class BlogeintragMapper {
 					+ "where textbeitrag.id = blogeintrag.id and blogeintrag.id = " + id);
 
 			if (rs.next()) {
-				be = new Blogeintrag(rs.getString("textbeitrag.inhalt"));
+				be = new Blogeintrag(rs.getString("inhalt"));
 
 				// Blogeintrag erstellen
-				be.setId(rs.getInt("textbeitrag.id"));
-				be.setDatum(rs.getDate("textbeitrag.datum"));
-				be.setTitel(rs.getString("blogeintrag.titel"));
-				be.setUntertitel(rs.getString("blogeintrag.untertitel"));
-				be.setAutor(PersonMapper.findById(rs.getInt("textbeitrag.autor")));
+				be.setId(rs.getInt("id"));
+				be.setDatum(rs.getDate("datum"));
+				be.setTitel(rs.getString("titel"));
+				be.setUntertitel(rs.getString("untertitel"));
+				be.setAutor(PersonMapper.findById(rs.getInt("autor")));
 				KommentarMapper.findAllForBlogeintrag(be);
 			}
 		} catch (SQLException e) {

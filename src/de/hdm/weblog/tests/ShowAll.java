@@ -1,6 +1,7 @@
 package de.hdm.weblog.tests;
 
 import de.hdm.weblog.BlogAdministration;
+import de.hdm.weblog.BlogAdministrationImpl;
 import de.hdm.weblog.Blogeintrag;
 
 public class ShowAll {
@@ -9,7 +10,7 @@ public class ShowAll {
 
 		// Test Blogeinträge auslesen
 
-		BlogAdministration adm = new BlogAdministration();
+		BlogAdministration adm = new BlogAdministrationImpl();
 		// findAll liefert einen Vector mit allen Blogeintrag-Objekten zurück
 		// Diese werden ausgegeben
 		for (Blogeintrag be : adm.findAll()) {

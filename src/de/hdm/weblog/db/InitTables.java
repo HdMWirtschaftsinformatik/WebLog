@@ -1,7 +1,5 @@
 package de.hdm.weblog.db;
 
-import de.hdm.weblog.BlogAdministration;
-
 public class InitTables {
 
 	public static void main(String[] args) {

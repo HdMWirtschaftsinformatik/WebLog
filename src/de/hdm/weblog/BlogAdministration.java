@@ -1,104 +1,48 @@
 package de.hdm.weblog;
 
-import java.util.Date;
 import java.util.Vector;
 
-import de.hdm.weblog.db.BlogeintragMapper;
-import de.hdm.weblog.db.KommentarMapper;
-import de.hdm.weblog.db.PersonMapper;
+public interface BlogAdministration {
 
-public class BlogAdministration {
+	Vector<Blogeintrag> findAll();
 
-	public BlogAdministration() {
+	Vector<Blogeintrag> findAllLatestFirst();
 
-		createPerson("Blogger", "Jonny", "blogger");
+	Blogeintrag findBlogeintragById(int id);
 
-	}
+	/**
+	 * 
+	 * @param name
+	 * @param vorname
+	 * @param email
+	 * @return
+	 */
+	Person createPerson(String name, String vorname, String email);
 
-	public Vector<Blogeintrag> findAll() {
-		Vector<Blogeintrag> blogs = BlogeintragMapper.findAll();
-		return blogs;
-	}
+	Person findPersonByEmail(String email);
 
-	public Vector<Blogeintrag> findAllLatestFirst() {
-		Vector<Blogeintrag> blogs = findAll();
-		blogs.sort(null);
-		return blogs;
-	}
+	Person findPersonById(int id);
 
-	public Blogeintrag findBlogeintragById(int id) {
-		return BlogeintragMapper.findById(id);
-	}
+	Vector<Person> findAllPersons();
 
-	public Person createPerson(String name, String vorname, String email) {
+	void deletePerson(Person p);
 
-		Person pers = PersonMapper.findByEmail(email);
-		if (pers != null) {
-			return pers;
-		}
+	Blogeintrag.Kommentar createKommentar(String inhalt, Person autor, Blogeintrag be);
 
-		pers = new Person(name, vorname, email);
-		PersonMapper.insert(pers);
+	/**
+	 * Das Erzeugen von Blogeinträgen ohne Autor wird "Jonny Blogger" guteschrieben.
+	 * @param inhalt
+	 * @param be
+	 * @return
+	 */
+	Blogeintrag.Kommentar createKommentar(String inhalt, Blogeintrag be);
 
-		return pers;
+	Blogeintrag createBlogeintrag(String inhalt, Person autor, String titel, String utitel);
 
-	}
+	Blogeintrag createBlogeintrag(String inhalt, String titel, String utitel);
 
-	public Person findPersonByEmail(String email) {
-		return PersonMapper.findByEmail(email);
-	}
+	void deleteBlogeintrag(Blogeintrag be);
 
-	public Person findPersonById(int id) {
-		return PersonMapper.findById(id);
-	}
-	
-	public Vector<Person> findAllPersons() {
-		return PersonMapper.findAll();
-	}
-	
-	public void deletePerson(Person p) {
-		PersonMapper.delete(p);
-	}
-
-	public Blogeintrag.Kommentar createKommentar(String inhalt, Person autor, Blogeintrag be) {
-		Blogeintrag.Kommentar kom = be.createKommentar(inhalt, autor, new Date());
-		KommentarMapper.insert(kom);
-
-		return kom;
-	}
-
-	public Blogeintrag.Kommentar createKommentar(String inhalt, Blogeintrag be) {
-		return createKommentar(inhalt, findPersonByEmail("blogger"), be);
-	}
-
-	public Blogeintrag createBlogeintrag(String inhalt, Person autor, String titel, String utitel) {
-
-		// Textbeitrag anlegen
-		// Daten aus Formular lesen
-
-		Blogeintrag blogeintr = new Blogeintrag(inhalt, autor, new Date(), titel, utitel);
-
-		BlogeintragMapper.insert(blogeintr);
-
-		return blogeintr;
-
-	}
-
-	public Blogeintrag createBlogeintrag(String inhalt, String titel, String utitel) {
-		return createBlogeintrag(inhalt, findPersonByEmail("blogger"), titel, utitel);
-	}
-
-	public void deleteBlogeintrag(Blogeintrag be) {
-		for (Blogeintrag.Kommentar kom : (Vector<Blogeintrag.Kommentar>) be.getKommentare().clone()) {
-			be.removeKommentar(kom);
-			KommentarMapper.delete(kom);
-		}
-		BlogeintragMapper.delete(be);
-	}
-
-	public void deleteKommentar(Blogeintrag.Kommentar kom) {
-		kom.getBlockeintrag().removeKommentar(kom);
-		KommentarMapper.delete(kom);
-	}
+	void deleteKommentar(Blogeintrag.Kommentar kom);
 
 }

@@ -1,10 +1,15 @@
 package de.hdm.weblog;
 
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Textbeitrag implements Comparable<Textbeitrag> {
+public class Textbeitrag implements Comparable<Textbeitrag>, Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private Date datum;
 	private String inhalt;
@@ -14,7 +19,9 @@ public class Textbeitrag implements Comparable<Textbeitrag> {
 		
 		//this.datum = date;
 		this.inhalt = inhalt;
-	};
+	}
+	
+	public Textbeitrag() {}
 
 	public boolean equals(Object o) {
 		if (o instanceof Textbeitrag) {
