@@ -11,11 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import de.hdm.weblog.BlogAdministration;
-import de.hdm.weblog.BlogAdministrationImpl;
-import de.hdm.weblog.Blogeintrag;
-import de.hdm.weblog.Blogeintrag.Kommentar;
-import de.hdm.weblog.Person;
+import de.hdm.weblog.server.BlogAdministrationImpl;
+import de.hdm.weblog.shared.BlogAdministration;
+import de.hdm.weblog.shared.Blogeintrag;
+import de.hdm.weblog.shared.Kommentar;
+import de.hdm.weblog.shared.Person;
 
 @WebServlet("/ShowBlog")
 public class ShowBlog extends HttpServlet {

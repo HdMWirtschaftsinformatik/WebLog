@@ -1,6 +1,6 @@
 package de.hdm.weblog.tests;
-import de.hdm.weblog.BlogAdministration;
-import de.hdm.weblog.BlogAdministrationImpl;
+import de.hdm.weblog.server.BlogAdministrationImpl;
+import de.hdm.weblog.shared.BlogAdministration;
 
 
 
