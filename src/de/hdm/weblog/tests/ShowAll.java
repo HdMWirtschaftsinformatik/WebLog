@@ -3,6 +3,7 @@ package de.hdm.weblog.tests;
 import de.hdm.weblog.BlogAdministration;
 import de.hdm.weblog.BlogAdministrationImpl;
 import de.hdm.weblog.Blogeintrag;
+import de.hdm.weblog.Kommentar;
 
 public class ShowAll {
 
@@ -15,7 +16,7 @@ public class ShowAll {
 		// Diese werden ausgegeben
 		for (Blogeintrag be : adm.findAll()) {
 			System.out.println(be);
-			for (Blogeintrag.Kommentar kom : be.getKommentare()) {
+			for (Kommentar kom : be.getKommentare()) {
 				System.out.println("     " + kom);
 			}
 		}

@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import de.hdm.weblog.BlogAdministration;
 import de.hdm.weblog.BlogAdministrationImpl;
 import de.hdm.weblog.Blogeintrag;
-import de.hdm.weblog.Blogeintrag.Kommentar;
+import de.hdm.weblog.Kommentar;
 import de.hdm.weblog.Person;
 
 @WebServlet("/ShowBlog")
@@ -83,7 +83,7 @@ public class ShowBlog extends HttpServlet {
 		for (Blogeintrag be : blogs) {
 
 			html = String.format("<form action=\"BlogEntryAction\" method=\"post\">%n"
-					+ "<h3><br>%n <small style=\"margin-left: 1em;\"> %s </small></h3>%n" + "<p>von %s%n</p>"
+					+ "<h3>%s <br>%n <small style=\"margin-left: 1em;\"> %s </small></h3>%n" + "<p>von %s%n</p>"
 					+ "<p>%n%s%n</p>%n", be.getTitel(), be.getUntertitel(), be.getAutor(), be.getInhalt());
 			out.println(html);
 

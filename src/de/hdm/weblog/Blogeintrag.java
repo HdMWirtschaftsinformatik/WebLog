@@ -16,32 +16,6 @@ public class Blogeintrag extends Textbeitrag {
 	private String untertitel;
 	
 	
-	public class Kommentar extends Textbeitrag {
-		
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		public Kommentar(String inhalt) {
-			super(inhalt);
-		}
-		
-		public Kommentar() {
-		}
-		
-		public Blogeintrag getBlockeintrag() {
-			return getThisBlogeintrag();
-		}
-
-		public String toString() {
-			return getAutor().toString() + ": "  + getInhalt(); 
-		}
-
-	}
-	
-	
-
 	public Blogeintrag(String inhalt) {
 		super(inhalt);
 	}
@@ -60,12 +34,9 @@ public class Blogeintrag extends Textbeitrag {
 		Kommentar kom = new Kommentar(inhalt);
 		kom.setAutor(autor);
 		kom.setDatum(datum);
+		kom.setBlogeintrag(this);
 		kommentare.add(kom);
 		return kom;
-	}
-	
-	private Blogeintrag getThisBlogeintrag() {
-		return this;
 	}
 
 

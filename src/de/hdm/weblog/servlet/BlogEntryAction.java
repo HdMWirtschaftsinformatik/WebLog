@@ -14,8 +14,8 @@ import javax.servlet.http.HttpSession;
 import de.hdm.weblog.BlogAdministration;
 import de.hdm.weblog.BlogAdministrationImpl;
 import de.hdm.weblog.Blogeintrag;
+import de.hdm.weblog.Kommentar;
 import de.hdm.weblog.Person;
-import de.hdm.weblog.Blogeintrag.Kommentar;
 
 /**
  * Servlet implementation class CreateBlogeintrag

@@ -76,8 +76,8 @@ public class BlogAdministrationImpl implements BlogAdministration {
 	}
 
 	@Override
-	public Blogeintrag.Kommentar createKommentar(String inhalt, Person autor, Blogeintrag be) {
-		Blogeintrag.Kommentar kom = null;
+	public Kommentar createKommentar(String inhalt, Person autor, Blogeintrag be) {
+		Kommentar kom = null;
 		if (autor != null && be != null) {
 			kom = be.createKommentar(inhalt, autor, new Date());
 			KommentarMapper.insert(kom);
@@ -94,7 +94,7 @@ public class BlogAdministrationImpl implements BlogAdministration {
 	 * @return
 	 */
 	@Override
-	public Blogeintrag.Kommentar createKommentar(String inhalt, Blogeintrag be) {
+	public Kommentar createKommentar(String inhalt, Blogeintrag be) {
 		return createKommentar(inhalt, findPersonByEmail("blogger@blogspot.com"), be);
 	}
 
@@ -121,13 +121,13 @@ public class BlogAdministrationImpl implements BlogAdministration {
 		// Kommentarvektor muss ge-clone-t werden, da während der Itaration über
 		// den Vector dieser verändert wird.
 		for (Object kom : (Vector<?>) be.getKommentare().clone()) {
-			deleteKommentar((Blogeintrag.Kommentar) kom);
+			deleteKommentar((Kommentar) kom);
 		}
 		BlogeintragMapper.delete(be);
 	}
 
 	@Override
-	public void deleteKommentar(Blogeintrag.Kommentar kom) {
+	public void deleteKommentar(Kommentar kom) {
 		kom.getBlockeintrag().removeKommentar(kom);
 		KommentarMapper.delete(kom);
 	}

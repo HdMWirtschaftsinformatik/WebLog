@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import de.hdm.weblog.Blogeintrag;
+import de.hdm.weblog.Kommentar;
 
 public class KommentarMapper {
 
@@ -17,7 +18,7 @@ public class KommentarMapper {
 					+ "where textbeitrag.id = kommentar.id and kommentar.blogeintrag = " + be.getId());
 
 			while (rs.next()) {
-				Blogeintrag.Kommentar kom = be.createKommentar(rs.getString("inhalt"),
+				Kommentar kom = be.createKommentar(rs.getString("inhalt"),
 						PersonMapper.findById(rs.getInt("autor")),
 						rs.getDate("datum"));
 				kom.setId(rs.getInt("id"));
@@ -27,7 +28,7 @@ public class KommentarMapper {
 		}
 	}
 
-	public static void insert(Blogeintrag.Kommentar kommentar) {
+	public static void insert(Kommentar kommentar) {
 
 		TextbeitragMapper.insert(kommentar);
 		Connection con = DBConnection.connection();
@@ -41,7 +42,7 @@ public class KommentarMapper {
 
 	}
 
-	public static void delete(Blogeintrag.Kommentar kommentar) {
+	public static void delete(Kommentar kommentar) {
 		delete(kommentar.getId());
 	}
 

@@ -27,7 +27,7 @@ public interface BlogAdministration {
 
 	void deletePerson(Person p);
 
-	Blogeintrag.Kommentar createKommentar(String inhalt, Person autor, Blogeintrag be);
+	Kommentar createKommentar(String inhalt, Person autor, Blogeintrag be);
 
 	/**
 	 * Das Erzeugen von Blogeinträgen ohne Autor wird "Jonny Blogger" guteschrieben.
@@ -35,7 +35,7 @@ public interface BlogAdministration {
 	 * @param be
 	 * @return
 	 */
-	Blogeintrag.Kommentar createKommentar(String inhalt, Blogeintrag be);
+	Kommentar createKommentar(String inhalt, Blogeintrag be);
 
 	Blogeintrag createBlogeintrag(String inhalt, Person autor, String titel, String utitel);
 
@@ -43,6 +43,6 @@ public interface BlogAdministration {
 
 	void deleteBlogeintrag(Blogeintrag be);
 
-	void deleteKommentar(Blogeintrag.Kommentar kom);
+	void deleteKommentar(Kommentar kom);
 
 }
