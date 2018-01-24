@@ -10,4 +10,18 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  
+  
+  
+  <servlet>
+    <servlet-name>weblogService</servlet-name>
+    <servlet-class>de.hdm.weblog.server.BlogAdministrationImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>weblogService</servlet-name>
+    <url-pattern>/webloggwt/weblog</url-pattern>
+  </servlet-mapping>
+  
+  
 </web-app>

@@ -2,7 +2,11 @@ package de.hdm.weblog.shared;
 
 import java.util.Vector;
 
+
+
 import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+@RemoteServiceRelativePath("weblog")
 
 public interface BlogAdministration extends RemoteService {
 

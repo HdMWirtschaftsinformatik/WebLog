@@ -15,6 +15,11 @@ import de.hdm.weblog.shared.Person;
 
 public class BlogAdministrationImpl extends RemoteServiceServlet implements BlogAdministration {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public BlogAdministrationImpl() {
 
 		// the one an only...
