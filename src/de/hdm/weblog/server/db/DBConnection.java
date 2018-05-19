@@ -13,10 +13,10 @@ public class DBConnection {
 
 	private static Connection con = null;
 
-	private static String connectionType = 
-//			"mySQL";
-		 "sqlServer";
-//		 "javaDB";
+	private static ConnectionType connectionType = 
+//			ConnectionType.mySQL;
+//		 ConnectionType.sqlServer;
+		 ConnectionType.javaDB;
 
 	private static String connectionUrl = getConnectionUrl();
 	
@@ -36,13 +36,13 @@ public class DBConnection {
 				 * Instanz beim DriverManager führt.
 				 */
 				switch (connectionType) {
-				case "mySQL":
+				case mySQL:
 					Class.forName("com.mysql.jdbc.Driver");
 					break;
-				case "javaDB":
+				case javaDB:
 					Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
 					break;
-				case "sqlServer":
+				case sqlServer:
 					Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 					break;
 				}
@@ -68,13 +68,17 @@ public class DBConnection {
 	
 	private static String getConnectionUrl() {
 		switch (connectionType) {
-		case "mySQL":
+		case mySQL:
 			return "jdbc:mysql://localhost/it2weblog?user=weblogdemo&password=weblogdemo";
-		case "sqlServer":
+		case sqlServer:
 			return "jdbc:sqlserver://edu.hdm-server.eu;user=weblogdemo;password=weblogdemo";
-		case "javaDB":
-			return "jdbc:derby:it2weblog;create=true";
+		case javaDB:
+			return "jdbc:derby:/Users/Christian/git/WebLog/WebContent/it2weblog;create=true";
 		}
 		return "";
 	}
+}
+
+enum ConnectionType {
+	mySQL, sqlServer, javaDB
 }
