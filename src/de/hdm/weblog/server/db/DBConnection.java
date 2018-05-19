@@ -73,7 +73,7 @@ public class DBConnection {
 		case sqlServer:
 			return "jdbc:sqlserver://edu.hdm-server.eu;user=weblogdemo;password=weblogdemo";
 		case javaDB:
-			return "jdbc:derby:/Users/Christian/git/WebLog/WebContent/it2weblog;create=true";
+			return "jdbc:derby:it2weblog;create=true";
 		}
 		return "";
 	}
