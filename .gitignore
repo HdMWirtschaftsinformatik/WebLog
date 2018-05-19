@@ -1,4 +1,5 @@
-/bin/
-/it2weblog/
-/gwt-unitCache/
-/it2weblog/
+/bin
+/gwt-unitCache
+webloggwt/
+it2weblog/
+derby.log
